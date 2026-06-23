@@ -278,6 +278,21 @@ button { font-family: inherit; cursor: pointer; }
 /* ---------------------------------------------------------------------------
    7. Stats
    ------------------------------------------------------------------------- */
+/* "Seit 1982" stats band on brand background + pattern */
+.stats--brand { position: relative; overflow: hidden; background: var(--brand); isolation: isolate; }
+.stats--brand::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.5;
+  background-image:
+    radial-gradient(rgba(255,255,255,0.22) 1.4px, transparent 1.4px),
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.06) 0, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 18px);
+  background-size: 24px 24px, auto;
+}
+.stats--brand .container { position: relative; z-index: 1; }
+.stats--brand .section-title { color: #fff; }
+.stats--brand .eyebrow { color: #fff; }
+.stats--brand .eyebrow::before { background: #fff; }
+.stats--brand .section-sub { color: rgba(255,255,255,0.92); }
+
 .stats__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-3); }
 .stat {
   text-align: center; padding: var(--sp-4) var(--sp-2); background: #fff;
@@ -311,14 +326,14 @@ button { font-family: inherit; cursor: pointer; }
   background: linear-gradient(to top, rgba(5,57,126,0.30), transparent 55%);
 }
 .service-card__icon {
-  position: absolute; left: 16px; bottom: -22px; z-index: 2;
-  width: 48px; height: 48px; display: grid; place-items: center; border-radius: 12px;
+  position: absolute; left: 20px; top: -26px; z-index: 3;
+  width: 52px; height: 52px; display: grid; place-items: center; border-radius: 14px;
   background: #fff; color: var(--color-accent); box-shadow: var(--shadow-md);
-  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
-.service-card__icon svg { width: 24px; height: 24px; }
-.service-card:hover .service-card__icon { background: linear-gradient(135deg, var(--brand), var(--brand-navy)); color: #fff; }
-.service-card__body { padding: var(--sp-4) var(--sp-3) var(--sp-3); display: flex; flex-direction: column; flex: 1; }
+.service-card__icon svg { width: 26px; height: 26px; }
+.service-card:hover .service-card__icon { background: linear-gradient(135deg, var(--brand), var(--brand-navy)); color: #fff; transform: translateY(-2px); }
+.service-card__body { position: relative; padding: calc(var(--sp-4) + 10px) var(--sp-3) var(--sp-3); display: flex; flex-direction: column; flex: 1; }
 .service-card h3 { font-size: var(--text-xl); margin-bottom: 8px; }
 .service-card p { font-size: var(--text-base); margin-bottom: var(--sp-2); }
 .service-card__link {
@@ -361,10 +376,10 @@ button { font-family: inherit; cursor: pointer; }
 .feature-list .tick svg { width: 16px; height: 16px; }
 .feature-list strong { color: var(--color-text); font-family: var(--font-head); font-weight: 600; }
 
-.about-video { margin-top: 0; }
+.about-video { margin-top: 0; max-width: 360px; margin-inline: auto; }
 .about-video video {
   width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
-  border: 1px solid var(--color-border); background: #000; aspect-ratio: 16 / 9; display: block;
+  border: 1px solid var(--color-border); background: #000; aspect-ratio: 9 / 16; display: block;
 }
 .about-video figcaption { font-size: var(--text-sm); color: var(--color-text-muted); margin-top: var(--sp-1); }
 
@@ -397,6 +412,8 @@ button { font-family: inherit; cursor: pointer; }
 .why__media { position: relative; margin: 0; }
 .why__media img { width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); aspect-ratio: 4 / 5; object-fit: cover; }
 .why__media::after { content: ""; position: absolute; inset: 0; border-radius: var(--radius-lg); box-shadow: inset 0 0 60px rgba(5,57,126,0.20); pointer-events: none; }
+.why__content .section-head { margin-bottom: var(--sp-3); max-width: none; }
+.why .section-title { color: var(--brand); }
 
 .why__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--sp-3); position: relative; }
 .why__item { text-align: left; padding: var(--sp-2); }
@@ -494,7 +511,7 @@ button { font-family: inherit; cursor: pointer; }
 /* ---------------------------------------------------------------------------
    15. Footer
    ------------------------------------------------------------------------- */
-.footer { background: var(--brand); color: #eaf6ff; padding-block: var(--sp-8) var(--sp-4); }
+.footer { background: linear-gradient(135deg, var(--brand) 0%, #0277b8 45%, var(--brand-navy) 100%); color: #eaf6ff; padding-block: var(--sp-8) var(--sp-4); }
 .footer__grid {
   display: grid; grid-template-columns: 1.6fr 1fr 1fr 1.1fr; gap: var(--sp-6);
   padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(255,255,255,0.22);
