@@ -1,0 +1,10 @@
+{
+  "name": "plaester-gebaeudereinigung",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static marketing site for Pläster Gebäudereinigung GmbH",
+  "dependencies": {
+    "motion": "^12.42.0"
+  },
+  "comment": "Static site (no bundler). The Motion UMD build is vendored at js/vendor/motion.js and loaded via a classic script tag; it exposes window.Motion (animate, inView, stagger, hover, scroll)."
+}
