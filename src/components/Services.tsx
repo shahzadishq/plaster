@@ -4,6 +4,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Reveal, staggerContainer, staggerItem } from "./motion";
+import TiltCard from "./TiltCard";
 import { asset } from "@/lib/asset";
 
 type Service = { icon: LucideIcon; img: string; title: string; alt: string; desc: string };
@@ -41,7 +42,7 @@ export default function Services() {
           {services.map((s) => {
             const Icon = s.icon;
             return (
-              <motion.article className="service-card" key={s.title} variants={staggerItem} whileHover={{ y: -6 }}>
+              <TiltCard className="service-card" key={s.title} variants={staggerItem}>
                 <div className="service-card__media">
                   <img src={asset(s.img)} alt={s.alt} loading="lazy" />
                 </div>
@@ -51,7 +52,7 @@ export default function Services() {
                   <p>{s.desc}</p>
                   <a className="service-card__link" href="#kontakt">Anfragen <ArrowRight /></a>
                 </div>
-              </motion.article>
+              </TiltCard>
             );
           })}
         </motion.div>

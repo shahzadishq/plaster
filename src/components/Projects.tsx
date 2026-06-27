@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Reveal, staggerContainer, staggerItem } from "./motion";
+import TiltCard from "./TiltCard";
 import { asset } from "@/lib/asset";
 
 type Project = { img: string; tag: string; title: string; sub: string; alt: string };
@@ -34,14 +35,14 @@ export default function Projects() {
           viewport={{ once: true, amount: 0.15 }}
         >
           {projects.map((p) => (
-            <motion.a className="project-card" href="#kontakt" key={p.title} variants={staggerItem} whileHover={{ y: -5 }}>
+            <TiltCard as="a" href="#kontakt" className="project-card" key={p.title} variants={staggerItem} max={6}>
               <img src={asset(p.img)} alt={p.alt} loading="lazy" />
               <span className="project-card__tag">{p.tag}</span>
               <div className="project-card__cap">
                 <h3>{p.title}</h3>
                 <span>{p.sub} <ArrowRight className="arrow" size={16} /></span>
               </div>
-            </motion.a>
+            </TiltCard>
           ))}
         </motion.div>
       </div>

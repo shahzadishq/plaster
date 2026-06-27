@@ -1,5 +1,6 @@
 import { MotionConfig, motion, useScroll } from "framer-motion";
-import HeroSection from "./components/blocks/hero-section-5";
+import Header from "./components/Header";
+import Hero from "./components/Hero";
 import About from "./components/About";
 import Stats from "./components/Stats";
 import Services from "./components/Services";
@@ -17,7 +18,6 @@ export default function App() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <span id="top" />
       <a className="skip-link" href="#main">Zum Inhalt springen</a>
       <motion.div
         className="progress"
@@ -25,9 +25,11 @@ export default function App() {
         style={{ width: "100%", scaleX: scrollYProgress, transformOrigin: "0% 50%" }}
       />
 
-      <HeroSection />
+      <Header />
 
       <main id="main">
+        <span id="top" />
+        <Hero />
         <About />
         <Stats />
         <Services />
