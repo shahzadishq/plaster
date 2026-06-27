@@ -237,9 +237,8 @@ button { font-family: inherit; cursor: pointer; }
 .hero {
   position: relative; color: #fff; overflow: hidden; isolation: isolate;
   min-height: 92vh; display: flex; flex-direction: column; justify-content: flex-end;
-  background:
-    linear-gradient(100deg, rgba(5,42,94,0.84) 0%, rgba(5,57,126,0.58) 44%, rgba(5,57,126,0.24) 100%),
-    url("../assets/468340775_122129564642398209_5784847375390515268_n.jpg") center/cover no-repeat;
+  background-color: var(--brand-navy);
+  /* gradient + photo are applied inline in <Hero> so Vite needn't bundle the image */
 }
 .hero__glow {
   position: absolute; z-index: 0; width: 520px; height: 520px; right: -8%; top: -12%;

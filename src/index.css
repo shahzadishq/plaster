@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* shadcn / 21st.dev design tokens (light). Primary mapped to the brand blue. */
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 17%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 17%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 17%;
+    --primary: 201 99% 46%;          /* #019AEA */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 212 92% 26%;        /* #05397E */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 201 100% 95%;
+    --accent-foreground: 212 92% 26%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 201 99% 46%;
+    --radius: 0.75rem;
+  }
+}
