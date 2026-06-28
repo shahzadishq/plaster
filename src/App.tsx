@@ -1,6 +1,7 @@
 import { MotionConfig, motion, useScroll } from "framer-motion";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
+import Marquee from "./components/Marquee";
 import About from "./components/About";
 import Stats from "./components/Stats";
 import Services from "./components/Services";
@@ -30,6 +31,7 @@ export default function App() {
       <main id="main">
         <span id="top" />
         <Hero />
+        <Marquee />
         <About />
         <Stats />
         <Services />

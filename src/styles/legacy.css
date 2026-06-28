@@ -780,10 +780,25 @@ button { font-family: inherit; cursor: pointer; }
 .stats--brand::before, .cta-band::before { display: none; }   /* replaced by animated layer */
 .stats--brand .container, .cta-band__inner { position: relative; z-index: 1; }
 
-/* subtle pattern behind the services section */
-.svc::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.05;
-  background-image: radial-gradient(var(--brand-navy) 1px, transparent 1.6px); background-size: 28px 28px; }
+/* animated pattern behind the services section */
+.svc::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.06;
+  background-image: radial-gradient(var(--brand-navy) 1px, transparent 1.6px); background-size: 28px 28px;
+  animation: svcPan 40s linear infinite; }
+@keyframes svcPan { from { background-position: 0 0; } to { background-position: 280px 140px; } }
 .svc > .container { position: relative; z-index: 1; }
+
+/* keyword marquee band */
+.marquee {
+  position: relative; overflow: hidden; background: var(--brand-navy); color: #fff; padding-block: 16px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+.marquee__track { display: flex; width: max-content; will-change: transform; }
+.marquee__item {
+  display: inline-flex; align-items: center; gap: 30px; padding-right: 30px; white-space: nowrap;
+  font-family: var(--font-head); font-weight: 600; font-size: var(--text-lg); letter-spacing: 0.01em;
+}
+.marquee__sep { width: 8px; height: 8px; border-radius: 50%; background: var(--brand-amber); flex-shrink: 0; }
 
 /* premium button motion + colored glow on hover */
 .btn { transition: transform .2s var(--ease-out-quiet), background .2s var(--ease-out-quiet), box-shadow .2s var(--ease-out-quiet), border-color .2s var(--ease-out-quiet); }

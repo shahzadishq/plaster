@@ -1,5 +1,6 @@
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import Magnetic from "./Magnetic";
 import { asset } from "@/lib/asset";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -18,11 +19,6 @@ const stats = [
 ];
 
 export default function Hero() {
-  const reduce = useReducedMotion();
-  const { scrollY } = useScroll();
-  // subtle scroll parallax on the team cut-out
-  const figureY = useTransform(scrollY, [0, 700], [0, reduce ? 0 : -60]);
-
   return (
     <section className="hero" style={heroBg}>
       <span className="hero__glow" aria-hidden="true" />
@@ -40,9 +36,11 @@ export default function Hero() {
             Photovoltaikanlagen und vieles mehr – zuverlässig, gründlich und mit eigenem Fuhrpark.
           </p>
           <div className="hero__actions">
-            <a className="btn btn--light btn--lg" href="#kontakt">
-              Kostenloses Angebot <ArrowRight />
-            </a>
+            <Magnetic>
+              <a className="btn btn--light btn--lg" href="#kontakt">
+                Kostenloses Angebot <ArrowRight />
+              </a>
+            </Magnetic>
             <a className="btn btn--ghost btn--on-dark btn--lg" href="#leistungen">Unsere Leistungen</a>
           </div>
         </motion.div>
@@ -53,12 +51,11 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
         >
-          <motion.img
-            style={{ y: figureY }}
+          <img
             src={asset("assets/plaster.webp")}
             alt="Zwei Mitarbeiter der Pläster Gebäudereinigung mit professioneller Reinigungsausrüstung"
             width={520}
-            height={540}
+            height={548}
           />
         </motion.figure>
       </div>
