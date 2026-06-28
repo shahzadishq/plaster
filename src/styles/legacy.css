@@ -780,11 +780,9 @@ button { font-family: inherit; cursor: pointer; }
 .stats--brand::before, .cta-band::before { display: none; }   /* replaced by animated layer */
 .stats--brand .container, .cta-band__inner { position: relative; z-index: 1; }
 
-/* animated pattern behind the services section */
+/* static dot pattern behind the services section */
 .svc::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.06;
-  background-image: radial-gradient(var(--brand-navy) 1px, transparent 1.6px); background-size: 28px 28px;
-  animation: svcPan 40s linear infinite; }
-@keyframes svcPan { from { background-position: 0 0; } to { background-position: 280px 140px; } }
+  background-image: radial-gradient(var(--brand-navy) 1px, transparent 1.6px); background-size: 28px 28px; }
 .svc > .container { position: relative; z-index: 1; }
 
 /* keyword marquee band */
@@ -807,22 +805,36 @@ button { font-family: inherit; cursor: pointer; }
   background: radial-gradient(circle at 32% 30%, rgba(1,154,234,0.18), rgba(1,154,234,0.06) 60%, transparent 72%);
   filter: blur(6px);
 }
-.svc-bubbles span:nth-child(1) { width: 360px; height: 360px; top: -80px; left: -60px; animation: bubbleA 13s ease-in-out infinite; }
-.svc-bubbles span:nth-child(2) { width: 260px; height: 260px; top: 30%; right: -70px; animation: bubbleB 17s ease-in-out infinite; }
-.svc-bubbles span:nth-child(3) { width: 420px; height: 420px; bottom: -150px; left: 28%; opacity: 0.9; animation: bubbleA 22s ease-in-out infinite; }
-.svc-bubbles span:nth-child(4) { width: 200px; height: 200px; top: 12%; left: 42%; animation: bubbleB 15s ease-in-out infinite; }
-@keyframes bubbleA { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(34px, -56px); } }
-@keyframes bubbleB { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-30px, 46px); } }
+.svc-bubbles span:nth-child(1) { width: 360px; height: 360px; top: -80px; left: -60px; animation: bubbleA 9s ease-in-out infinite; }
+.svc-bubbles span:nth-child(2) { width: 260px; height: 260px; top: 30%; right: -70px; animation: bubbleB 11s ease-in-out infinite; }
+.svc-bubbles span:nth-child(3) { width: 420px; height: 420px; bottom: -150px; left: 28%; opacity: 0.9; animation: bubbleA 8s ease-in-out infinite; }
+.svc-bubbles span:nth-child(4) { width: 200px; height: 200px; top: 12%; left: 42%; animation: bubbleB 12s ease-in-out infinite; }
+/* random, non-rotating drift between several positions */
+@keyframes bubbleA {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(70px, 50px); }
+  50%  { transform: translate(-50px, 90px); }
+  75%  { transform: translate(60px, -40px); }
+  100% { transform: translate(0, 0); }
+}
+@keyframes bubbleB {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-60px, -50px); }
+  50%  { transform: translate(50px, -90px); }
+  75%  { transform: translate(-40px, 60px); }
+  100% { transform: translate(0, 0); }
+}
 
-/* large rotating circular-text badge (sample) — half off-screen, above footer */
-.circle-band { position: relative; height: 320px; overflow: hidden; background: var(--color-bg-alt); }
+/* large rotating circular-text badge (sample) — half off-screen, inside contact */
+.kontakt > .container { position: relative; z-index: 1; }
 .circle-marquee {
-  position: absolute; left: -170px; top: 50%; transform: translateY(-50%);
-  width: 340px; height: 340px; border: 5px solid var(--brand-navy); border-radius: 50%;
-  background: #fff; box-shadow: var(--shadow-lg); display: grid; place-items: center;
+  position: absolute; left: -160px; bottom: 32px; z-index: 0;
+  width: 320px; height: 320px; border: 5px solid var(--brand); border-radius: 50%;
+  background: var(--brand-navy); box-shadow: var(--shadow-lg); display: grid; place-items: center;
 }
 .circle-marquee__svg { width: 92%; height: 92%; }
-.circle-marquee__text { font-family: var(--font-head); font-weight: 700; font-size: 12px; letter-spacing: 0.16em; fill: var(--brand-navy); text-transform: uppercase; }
+.circle-marquee__text { font-family: var(--font-head); font-weight: 700; font-size: 12px; letter-spacing: 0.16em; fill: #fff; text-transform: uppercase; }
+@media (max-width: 1024px) { .circle-marquee { display: none; } }
 
 /* premium button — glossy shine sweep + lift on hover (brand colors) */
 .btn { position: relative; overflow: hidden;

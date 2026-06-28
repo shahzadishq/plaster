@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 import { Reveal } from "./motion";
+import CircleMarquee from "./CircleMarquee";
 
 export default function Contact() {
   const [submitting, setSubmitting] = useState(false);
@@ -24,7 +25,8 @@ export default function Contact() {
   }
 
   return (
-    <section className="section" id="kontakt">
+    <section className="section kontakt" id="kontakt">
+      <CircleMarquee />
       <div className="container">
         <Reveal className="section-head section-head--left">
           <span className="eyebrow">Kontakt</span>
