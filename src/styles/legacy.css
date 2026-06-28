@@ -844,7 +844,7 @@ button { font-family: inherit; cursor: pointer; }
   background: linear-gradient(105deg, transparent 38%, rgba(255,255,255,0.22), transparent 62%); transform: translateX(-110%); }
 .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px -10px color-mix(in srgb, var(--brand) 70%, transparent); }
 .btn:active { transform: translateY(1px); }
-.btn--primary:hover { background: color-mix(in srgb, var(--brand) 88%, black); }
+.btn--primary:hover { background: var(--brand-navy); }   /* #05397E */
 .btn--light:hover { background: #fff; }
 .nav__actions .btn--primary:hover { box-shadow: 0 10px 28px -10px color-mix(in srgb, var(--brand-amber) 70%, transparent); }
 @media (prefers-reduced-motion: no-preference) {
