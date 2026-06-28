@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import Magnetic from "./Magnetic";
 import { asset } from "@/lib/asset";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -36,11 +35,9 @@ export default function Hero() {
             Photovoltaikanlagen und vieles mehr – zuverlässig, gründlich und mit eigenem Fuhrpark.
           </p>
           <div className="hero__actions">
-            <Magnetic>
-              <a className="btn btn--light btn--lg" href="#kontakt">
-                Kostenloses Angebot <ArrowRight />
-              </a>
-            </Magnetic>
+            <a className="btn btn--light btn--lg" href="#kontakt">
+              Kostenloses Angebot <ArrowRight />
+            </a>
             <a className="btn btn--ghost btn--on-dark btn--lg" href="#leistungen">Unsere Leistungen</a>
           </div>
         </motion.div>

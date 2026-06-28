@@ -22,6 +22,9 @@ const services: Service[] = [
 export default function Services() {
   return (
     <section className="section svc" id="leistungen">
+      <div className="svc-bubbles" aria-hidden="true">
+        <span /><span /><span /><span />
+      </div>
       <div className="container">
         <Reveal className="section-head">
           <span className="eyebrow">Leistungen</span>

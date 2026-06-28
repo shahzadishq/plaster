@@ -789,16 +789,46 @@ button { font-family: inherit; cursor: pointer; }
 
 /* keyword marquee band */
 .marquee {
-  position: relative; overflow: hidden; background: var(--brand-navy); color: #fff; padding-block: 16px;
+  position: relative; overflow: hidden; background: var(--brand); color: #fff; padding-block: 22px;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
 }
 .marquee__track { display: flex; width: max-content; will-change: transform; }
 .marquee__item {
-  display: inline-flex; align-items: center; gap: 30px; padding-right: 30px; white-space: nowrap;
-  font-family: var(--font-head); font-weight: 600; font-size: var(--text-lg); letter-spacing: 0.01em;
+  display: inline-flex; align-items: center; gap: 38px; padding-right: 38px; white-space: nowrap;
+  font-family: var(--font-head); font-weight: 700; font-size: clamp(1.5rem, 2.4vw, 2.25rem); letter-spacing: 0.01em;
 }
-.marquee__sep { width: 8px; height: 8px; border-radius: 50%; background: var(--brand-amber); flex-shrink: 0; }
+.marquee__sep { width: 12px; height: 12px; border-radius: 50%; background: var(--brand-amber); flex-shrink: 0; }
+
+/* large soft blue bubbles behind the services section */
+.svc-bubbles { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.svc-bubbles span {
+  position: absolute; border-radius: 50%;
+  background: radial-gradient(circle at 32% 30%, rgba(1,154,234,0.16), rgba(1,154,234,0.05) 60%, transparent 72%);
+  filter: blur(6px); animation: bubbleFloat 16s ease-in-out infinite;
+}
+.svc-bubbles span:nth-child(1) { width: 360px; height: 360px; top: -80px; left: -60px; }
+.svc-bubbles span:nth-child(2) { width: 260px; height: 260px; top: 30%; right: -70px; animation-duration: 20s; animation-delay: -4s; }
+.svc-bubbles span:nth-child(3) { width: 420px; height: 420px; bottom: -140px; left: 28%; animation-duration: 24s; animation-delay: -8s; opacity: 0.9; }
+.svc-bubbles span:nth-child(4) { width: 200px; height: 200px; top: 12%; left: 40%; animation-duration: 18s; animation-delay: -2s; }
+@keyframes bubbleFloat { 0%, 100% { transform: translateY(0) translateX(0); } 50% { transform: translateY(-28px) translateX(12px); } }
+
+/* rotating circular-text badge (sample), bottom-left above footer */
+.circle-band { background: var(--color-bg); padding-block: var(--sp-6); }
+.circle-marquee { position: relative; display: inline-grid; place-items: center; width: 150px; height: 150px; color: var(--brand-navy); }
+.circle-marquee__svg { width: 100%; height: 100%; }
+.circle-marquee__text { font-family: var(--font-head); font-weight: 600; font-size: 13px; letter-spacing: 0.12em; fill: var(--brand-navy); text-transform: uppercase; }
+.circle-marquee__center {
+  position: absolute; width: 56px; height: 56px; display: grid; place-items: center; border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand), var(--brand-navy)); color: #fff; box-shadow: var(--shadow-md);
+  transition: transform var(--dur) var(--ease);
+}
+.circle-marquee__center svg { width: 24px; height: 24px; }
+.circle-marquee:hover .circle-marquee__center { transform: scale(1.08); }
+
+/* unified premium hover on ALL buttons (header, hero, everywhere) */
+.btn:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 12px 30px -12px color-mix(in srgb, var(--brand) 75%, transparent); }
+.nav__actions .btn--primary:hover { box-shadow: 0 12px 30px -12px color-mix(in srgb, var(--brand-amber) 75%, transparent); }
 
 /* premium button motion + colored glow on hover */
 .btn { transition: transform .2s var(--ease-out-quiet), background .2s var(--ease-out-quiet), box-shadow .2s var(--ease-out-quiet), border-color .2s var(--ease-out-quiet); }
