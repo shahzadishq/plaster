@@ -35,7 +35,6 @@ export default function Hero() {
         >
           <span className="hero__badge"><span className="dot" /> Familienbetrieb · Qualität seit 1982</span>
           <h1>Professionelle <em>Gebäude&shy;reinigung</em> <span className="accent">seit 1982</span></h1>
-          <p className="hero__sub">Vertrauen. Qualität. Zuverlässigkeit.</p>
           <p className="hero__lead">
             Seit über 40 Jahren sorgen wir in Emmendingen und Umgebung für saubere Büros, Glasfassaden,
             Photovoltaikanlagen und vieles mehr – zuverlässig, gründlich und mit eigenem Fuhrpark.

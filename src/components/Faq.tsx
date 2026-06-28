@@ -33,7 +33,7 @@ export default function Faq() {
       <div className="container faq-layout">
         <Reveal className="faq-intro">
           <span className="eyebrow">FAQ &amp; Support</span>
-          <h2 className="section-title">Alles, was Sie<br />wissen müssen</h2>
+          <h2 className="section-title">Alles, was Sie<br /><em>wissen müssen</em></h2>
           <div className="faq-card">
             <a className="faq-card__media" href="#ueber-uns" aria-label="Video ansehen">
               <img

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import { Reveal, staggerContainer, staggerItem } from "./motion";
+import TiltCard from "./TiltCard";
 
 type T = { quote: string; name: string; role: string; initials: string };
 
@@ -16,7 +17,7 @@ export default function Testimonials() {
       <div className="container">
         <Reveal className="section-head">
           <span className="eyebrow">Kundenstimmen</span>
-          <h2 className="section-title">Das sagen unsere Kunden</h2>
+          <h2 className="section-title">Das sagen unsere <em>Kunden</em></h2>
           <p className="section-sub">Vertrauen, das über Jahre gewachsen ist.</p>
         </Reveal>
 
@@ -28,7 +29,7 @@ export default function Testimonials() {
           viewport={{ once: true, amount: 0.2 }}
         >
           {items.map((t) => (
-            <motion.article className="testimonial" key={t.name} variants={staggerItem} whileHover={{ y: -6 }}>
+            <TiltCard className="testimonial" key={t.name} variants={staggerItem} max={6}>
               <div className="testimonial__stars" aria-label="5 von 5 Sternen">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star key={i} fill="currentColor" strokeWidth={0} />
@@ -42,7 +43,7 @@ export default function Testimonials() {
                   <div className="testimonial__role">{t.role}</div>
                 </div>
               </div>
-            </motion.article>
+            </TiltCard>
           ))}
         </motion.div>
       </div>

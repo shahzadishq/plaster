@@ -21,11 +21,11 @@ const services: Service[] = [
 
 export default function Services() {
   return (
-    <section className="section" id="leistungen">
+    <section className="section svc" id="leistungen">
       <div className="container">
         <Reveal className="section-head">
           <span className="eyebrow">Leistungen</span>
-          <h2 className="section-title">Saubere Lösungen für jedes Gebäude</h2>
+          <h2 className="section-title">Saubere Lösungen für <em>jedes Gebäude</em></h2>
           <p className="section-sub">
             Von der regelmäßigen Unterhaltsreinigung bis zur Spezialreinigung – ein Ansprechpartner für alle
             Reinigungsaufgaben.

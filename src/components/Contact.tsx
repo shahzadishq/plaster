@@ -28,7 +28,7 @@ export default function Contact() {
       <div className="container">
         <Reveal className="section-head section-head--left">
           <span className="eyebrow">Kontakt</span>
-          <h2 className="section-title">Fordern Sie Ihr kostenloses Angebot an</h2>
+          <h2 className="section-title">Fordern Sie Ihr <em>kostenloses Angebot</em> an</h2>
           <p className="section-sub">Schreiben Sie uns – wir melden uns in der Regel innerhalb eines Werktags.</p>
         </Reveal>
 

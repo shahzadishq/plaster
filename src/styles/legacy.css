@@ -144,7 +144,7 @@ button { font-family: inherit; cursor: pointer; }
 }
 .eyebrow::before { content: ""; width: 22px; height: 2px; background: var(--brand); border-radius: 2px; }
 
-.section-title { font-size: var(--text-3xl); margin-bottom: var(--sp-2); }
+.section-title { font-size: clamp(2rem, 4vw, 2.5rem); margin-bottom: var(--sp-2); }
 .section-sub { font-size: var(--text-lg); color: var(--color-text-muted); }
 
 /* ---------------------------------------------------------------------------
@@ -751,4 +751,45 @@ button { font-family: inherit; cursor: pointer; }
   :root { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
   .reveal, .reveal[data-stagger] > * { opacity: 1 !important; transform: none !important; }
+}
+
+/* ---------------------------------------------------------------------------
+   19. Premium enhancements
+   ------------------------------------------------------------------------- */
+:root { --ease-out-quiet: cubic-bezier(0.22, 1, 0.36, 1); }
+
+/* h2 two-tone: italic brand-colored accent + larger */
+.section-title em { font-style: italic; color: var(--brand); font-weight: inherit; }
+.stats--brand .section-title em,
+.why--brand .section-title em { color: var(--brand-amber); }
+.cta-band h2 { font-size: clamp(2rem, 4vw, 2.5rem); }
+.cta-band h2 em { font-style: italic; color: var(--brand-amber); font-weight: inherit; }
+
+/* hero cut-out flush to the hero's bottom line */
+.hero__copy { padding-bottom: 0; }
+.hero__figure { align-self: end; display: flex; align-items: flex-end; justify-content: center; }
+.hero__figure img { margin: 0 auto; }
+
+/* animated "video-like" drifting dot background */
+.anim-dots { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.anim-dots span { position: absolute; inset: -25%; display: block; }
+.anim-dots__l1 { background-image: radial-gradient(rgba(255,255,255,0.22) 1.6px, transparent 1.7px); background-size: 26px 26px; animation: dotsPan1 22s linear infinite; }
+.anim-dots__l2 { background-image: radial-gradient(rgba(255,255,255,0.13) 1.2px, transparent 1.3px); background-size: 42px 42px; animation: dotsPan2 34s linear infinite; }
+@keyframes dotsPan1 { from { transform: translate3d(0,0,0); } to { transform: translate3d(-130px,-65px,0); } }
+@keyframes dotsPan2 { from { transform: translate3d(0,0,0); } to { transform: translate3d(120px,60px,0); } }
+.stats--brand::before, .cta-band::before { display: none; }   /* replaced by animated layer */
+.stats--brand .container, .cta-band__inner { position: relative; z-index: 1; }
+
+/* subtle pattern behind the services section */
+.svc::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.05;
+  background-image: radial-gradient(var(--brand-navy) 1px, transparent 1.6px); background-size: 28px 28px; }
+.svc > .container { position: relative; z-index: 1; }
+
+/* premium button motion + colored glow on hover */
+.btn { transition: transform .2s var(--ease-out-quiet), background .2s var(--ease-out-quiet), box-shadow .2s var(--ease-out-quiet), border-color .2s var(--ease-out-quiet); }
+.btn--primary:hover { box-shadow: 0 10px 28px -10px color-mix(in srgb, var(--brand) 70%, transparent); }
+.nav__actions .btn--primary:hover { box-shadow: 0 10px 28px -10px color-mix(in srgb, var(--brand-amber) 70%, transparent); }
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-dots span { animation: none !important; }
 }

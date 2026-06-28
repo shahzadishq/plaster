@@ -31,7 +31,7 @@ export default function Why() {
           <div className="why__content">
             <Reveal className="section-head section-head--left">
               <span className="eyebrow">Warum Pläster</span>
-              <h2 className="section-title">Warum Pläster Gebäudereinigung?</h2>
+              <h2 className="section-title">Warum Pläster <em>Gebäudereinigung?</em></h2>
               <p className="section-sub">Vier gute Gründe, warum Kunden seit über 40 Jahren auf uns vertrauen.</p>
             </Reveal>
 

@@ -14,7 +14,7 @@ export default function About() {
       <div className="container split">
         <Reveal>
           <span className="eyebrow">Über uns</span>
-          <h2 className="section-title">Ein Familienbetrieb mit Tradition</h2>
+          <h2 className="section-title">Ein Familienbetrieb mit <em>Tradition</em></h2>
           <p>
             Seit <strong>1982</strong> steht der Name Pläster für gründliche, verlässliche Gebäudereinigung.
             Aus einem kleinen Familienbetrieb ist ein eingespieltes Team mit eigenem Fuhrpark und modernem

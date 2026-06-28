@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, animate } from "framer-motion";
 import { Reveal, staggerContainer, staggerItem } from "./motion";
+import AnimatedDots from "./AnimatedDots";
 
 function Counter({ to }: { to: number }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -30,10 +31,11 @@ const stats: Stat[] = [
 export default function Stats() {
   return (
     <section className="section stats stats--brand" aria-label="Zahlen &amp; Fakten">
+      <AnimatedDots />
       <div className="container">
         <Reveal className="section-head">
           <span className="eyebrow">Seit 1982</span>
-          <h2 className="section-title">40+ Jahre Erfahrung &amp; Qualität</h2>
+          <h2 className="section-title">40+ Jahre Erfahrung &amp; <em>Qualität</em></h2>
           <p className="section-sub">
             Ein verlässlicher Partner für Unternehmen, Hausverwaltungen und Privatkunden – mit eigenem Fuhrpark
             und geschultem Team.

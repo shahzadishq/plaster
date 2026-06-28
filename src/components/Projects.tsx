@@ -21,7 +21,7 @@ export default function Projects() {
       <div className="container">
         <Reveal className="section-head">
           <span className="eyebrow">Referenzen</span>
-          <h2 className="section-title">Projekte, die für sich sprechen</h2>
+          <h2 className="section-title">Projekte, die für sich <em>sprechen</em></h2>
           <p className="section-sub">
             Ein Auszug aus unserer täglichen Arbeit – vom Bürogebäude bis zur Photovoltaikanlage.
           </p>
