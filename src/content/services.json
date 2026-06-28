@@ -1,0 +1,11 @@
+{
+  "items": [
+    { "title": "Unterhaltsreinigung", "desc": "Regelmäßige, werterhaltende Reinigung von Büros, Treppenhäusern, Sanitär- und Gemeinschaftsflächen – zuverlässig nach Ihrem individuellen Plan.", "image": "assets/Unterhaltsreinigung.webp", "icon": "building", "alt": "Unterhaltsreinigung von Büro- und Gemeinschaftsflächen" },
+    { "title": "Glas- & Fassadenreinigung", "desc": "Streifenfreie Fenster, Glasfassaden und Rahmen sowie schonende Fassadenreinigung – für einen klaren, gepflegten Auftritt, auch in der Höhe.", "image": "assets/Glas-Fassadenreinigung.webp", "icon": "window", "alt": "Glas- und Fassadenreinigung" },
+    { "title": "Bauschlussreinigung", "desc": "Nach Neubau, Umbau oder Renovierung entfernen wir Baustaub und Rückstände und übergeben bezugsfertige, besenreine Flächen.", "image": "assets/Bauschlussreinigung.webp", "icon": "hardhat", "alt": "Bauschlussreinigung nach Neubau und Renovierung" },
+    { "title": "Photovoltaik-Reinigung", "desc": "Verschmutzte Module kosten Ertrag. Mit schonender, entkalkter Reinigung steigern wir die Leistung Ihrer Anlage – materialgerecht und sicher.", "image": "assets/Photovoltaik%20-%20Reinigung.webp", "icon": "sun", "alt": "Reinigung von Photovoltaikanlagen" },
+    { "title": "Reinraumreinigung", "desc": "Spezialreinigung für sensible Bereiche mit höchsten Hygieneanforderungen – nach validierten Verfahren für Labore, Produktion und Technik.", "image": "assets/Reinraum%20Reinigung.webp", "icon": "shield", "alt": "Reinraumreinigung für sensible Bereiche" },
+    { "title": "Tatortreinigung", "desc": "Diskrete, fachgerechte Tatort-, Geruchs- und Desinfektionsreinigung mit zertifizierten Verfahren – einfühlsam, gründlich und zuverlässig.", "image": "assets/Tatortreinigung.webp", "icon": "alert", "alt": "Diskrete und fachgerechte Tatortreinigung" },
+    { "title": "Gerätevermietung", "desc": "Professionelle Reinigungsmaschinen und Geräte zur Miete – vom Reinigungsautomaten bis zum Hochdruckreiniger, inklusive Einweisung.", "image": "assets/Ger%C3%A4tevermietung.webp", "icon": "wrench", "alt": "Vermietung professioneller Reinigungsmaschinen und Geräte" }
+  ]
+}

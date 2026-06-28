@@ -1,4 +1,6 @@
+import type { ComponentType } from "react";
 import { MotionConfig, motion, useScroll } from "framer-motion";
+import ThemeInjector from "./components/ThemeInjector";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Marquee from "./components/Marquee";
@@ -12,13 +14,29 @@ import Faq from "./components/Faq";
 import Cta from "./components/Cta";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
-import CallBar from "./components/CallBar";
+import sectionsData from "./content/sections.json";
+
+// Registry of toggleable / reorderable sections (managed in the CMS).
+const REGISTRY: Record<string, ComponentType> = {
+  about: About,
+  marquee: Marquee,
+  stats: Stats,
+  services: Services,
+  projects: Projects,
+  why: Why,
+  testimonials: Testimonials,
+  faq: Faq,
+  cta: Cta,
+  contact: Contact,
+};
 
 export default function App() {
   const { scrollYProgress } = useScroll();
+  const sections = sectionsData.items.filter((s) => s.visible);
 
   return (
     <MotionConfig reducedMotion="user">
+      <ThemeInjector />
       <a className="skip-link" href="#main">Zum Inhalt springen</a>
       <motion.div
         className="progress"
@@ -31,20 +49,13 @@ export default function App() {
       <main id="main">
         <span id="top" />
         <Hero />
-        <About />
-        <Marquee />
-        <Stats />
-        <Services />
-        <Projects />
-        <Why />
-        <Testimonials />
-        <Faq />
-        <Cta />
-        <Contact />
+        {sections.map((s) => {
+          const C = REGISTRY[s.id];
+          return C ? <C key={s.id} /> : null;
+        })}
       </main>
 
       <Footer />
-      <CallBar />
     </MotionConfig>
   );
 }

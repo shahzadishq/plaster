@@ -6,18 +6,16 @@ import type { LucideIcon } from "lucide-react";
 import { Reveal, staggerContainer, staggerItem } from "./motion";
 import TiltCard from "./TiltCard";
 import { asset } from "@/lib/asset";
+import servicesData from "@/content/services.json";
 
-type Service = { icon: LucideIcon; img: string; title: string; alt: string; desc: string };
+const ICONS: Record<string, LucideIcon> = {
+  building: Building2, window: PanelTop, hardhat: HardHat, sun: Sun,
+  shield: ShieldCheck, alert: ShieldAlert, wrench: Wrench,
+};
 
-const services: Service[] = [
-  { icon: Building2, img: "assets/Unterhaltsreinigung.webp", title: "Unterhaltsreinigung", alt: "Unterhaltsreinigung von Büro- und Gemeinschaftsflächen", desc: "Regelmäßige, werterhaltende Reinigung von Büros, Treppenhäusern, Sanitär- und Gemeinschaftsflächen – zuverlässig nach Ihrem individuellen Plan." },
-  { icon: PanelTop, img: "assets/Glas-Fassadenreinigung.webp", title: "Glas- & Fassadenreinigung", alt: "Glas- und Fassadenreinigung", desc: "Streifenfreie Fenster, Glasfassaden und Rahmen sowie schonende Fassadenreinigung – für einen klaren, gepflegten Auftritt, auch in der Höhe." },
-  { icon: HardHat, img: "assets/Bauschlussreinigung.webp", title: "Bauschlussreinigung", alt: "Bauschlussreinigung nach Neubau und Renovierung", desc: "Nach Neubau, Umbau oder Renovierung entfernen wir Baustaub und Rückstände und übergeben bezugsfertige, besenreine Flächen." },
-  { icon: Sun, img: "assets/Photovoltaik%20-%20Reinigung.webp", title: "Photovoltaik-Reinigung", alt: "Reinigung von Photovoltaikanlagen", desc: "Verschmutzte Module kosten Ertrag. Mit schonender, entkalkter Reinigung steigern wir die Leistung Ihrer Anlage – materialgerecht und sicher." },
-  { icon: ShieldCheck, img: "assets/Reinraum%20Reinigung.webp", title: "Reinraumreinigung", alt: "Reinraumreinigung für sensible Bereiche", desc: "Spezialreinigung für sensible Bereiche mit höchsten Hygieneanforderungen – nach validierten Verfahren für Labore, Produktion und Technik." },
-  { icon: ShieldAlert, img: "assets/Tatortreinigung.webp", title: "Tatortreinigung", alt: "Diskrete und fachgerechte Tatortreinigung", desc: "Diskrete, fachgerechte Tatort-, Geruchs- und Desinfektionsreinigung mit zertifizierten Verfahren – einfühlsam, gründlich und zuverlässig." },
-  { icon: Wrench, img: "assets/Ger%C3%A4tevermietung.webp", title: "Gerätevermietung", alt: "Vermietung professioneller Reinigungsmaschinen und Geräte", desc: "Professionelle Reinigungsmaschinen und Geräte zur Miete – vom Reinigungsautomaten bis zum Hochdruckreiniger, inklusive Einweisung." },
-];
+type Service = { icon: string; image: string; title: string; alt?: string; desc: string };
+
+const services: Service[] = servicesData.items;
 
 export default function Services() {
   return (
@@ -43,11 +41,11 @@ export default function Services() {
           viewport={{ once: true, amount: 0.15 }}
         >
           {services.map((s) => {
-            const Icon = s.icon;
+            const Icon = ICONS[s.icon] ?? Building2;
             return (
               <TiltCard className="service-card" key={s.title} variants={staggerItem}>
                 <div className="service-card__media">
-                  <img src={asset(s.img)} alt={s.alt} loading="lazy" />
+                  <img src={asset(s.image)} alt={s.alt ?? s.title} loading="lazy" />
                 </div>
                 <div className="service-card__body">
                   <span className="service-card__icon"><Icon /></span>

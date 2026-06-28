@@ -1,0 +1,25 @@
+{
+  "colors": {
+    "brand": "#019AEA",
+    "navy": "#05397E",
+    "amber": "#FFC400"
+  },
+  "contact": {
+    "company": "Pläster Gebäudereinigung GmbH",
+    "street": "Wiesenstraße 16",
+    "postal": "79312",
+    "city": "Emmendingen",
+    "country": "Deutschland",
+    "phone": "+49 (0) 7641 95257",
+    "phoneHref": "+49764195257",
+    "email": "info@plaester.de",
+    "web": "www.plaester.de",
+    "hours": "Mo – Fr: 08:00 – 17:00 Uhr"
+  },
+  "hero": {
+    "lead": "Seit über 40 Jahren sorgen wir in Emmendingen und Umgebung für saubere Büros, Glasfassaden, Photovoltaikanlagen und vieles mehr – zuverlässig, gründlich und mit eigenem Fuhrpark."
+  },
+  "about": {
+    "text": "Seit 1982 steht der Name Pläster für gründliche, verlässliche Gebäudereinigung. Aus einem kleinen Familienbetrieb ist ein eingespieltes Team mit eigenem Fuhrpark und modernem Equipment geworden – Ihr vertrauensvoller Partner für Gewerbe, Hausverwaltungen und Privatkunden in Emmendingen und Umgebung."
+  }
+}

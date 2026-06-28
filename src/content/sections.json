@@ -1,0 +1,14 @@
+{
+  "items": [
+    { "id": "about", "label": "Über uns", "visible": true },
+    { "id": "marquee", "label": "Lauftext", "visible": true },
+    { "id": "stats", "label": "Zahlen & Fakten", "visible": true },
+    { "id": "services", "label": "Leistungen", "visible": true },
+    { "id": "projects", "label": "Referenzen", "visible": true },
+    { "id": "why", "label": "Warum Pläster", "visible": true },
+    { "id": "testimonials", "label": "Kundenstimmen", "visible": true },
+    { "id": "faq", "label": "FAQ", "visible": true },
+    { "id": "cta", "label": "Call-to-Action", "visible": true },
+    { "id": "contact", "label": "Kontakt", "visible": true }
+  ]
+}

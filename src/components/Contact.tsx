@@ -2,6 +2,9 @@ import { useState } from "react";
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 import { Reveal } from "./motion";
 import CircleMarquee from "./CircleMarquee";
+import settings from "@/content/settings.json";
+
+const c = settings.contact;
 
 export default function Contact() {
   const [submitting, setSubmitting] = useState(false);
@@ -38,19 +41,19 @@ export default function Contact() {
           <div className="contact-info">
             <div className="contact-info__item">
               <span className="contact-info__icon"><MapPin /></span>
-              <div><h4>Adresse</h4><p>Pläster Gebäudereinigung GmbH<br />Wiesenstraße 16<br />79312 Emmendingen, Deutschland</p></div>
+              <div><h4>Adresse</h4><p>{c.company}<br />{c.street}<br />{c.postal} {c.city}{c.country ? `, ${c.country}` : ""}</p></div>
             </div>
             <div className="contact-info__item">
               <span className="contact-info__icon"><Phone /></span>
-              <div><h4>Telefon</h4><p><a href="tel:+49764195257">+49 (0) 7641 95257</a></p></div>
+              <div><h4>Telefon</h4><p><a href={`tel:${c.phoneHref}`}>{c.phone}</a></p></div>
             </div>
             <div className="contact-info__item">
               <span className="contact-info__icon"><Mail /></span>
-              <div><h4>E-Mail</h4><p><a href="mailto:info@plaester.de">info@plaester.de</a></p></div>
+              <div><h4>E-Mail</h4><p><a href={`mailto:${c.email}`}>{c.email}</a></p></div>
             </div>
             <div className="contact-info__item">
               <span className="contact-info__icon"><Clock /></span>
-              <div><h4>Erreichbarkeit</h4><p>Mo – Fr: 08:00 – 17:00 Uhr</p></div>
+              <div><h4>Erreichbarkeit</h4><p>{c.hours}</p></div>
             </div>
           </div>
 

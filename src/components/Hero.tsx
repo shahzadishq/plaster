@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { asset } from "@/lib/asset";
+import settings from "@/content/settings.json";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -30,10 +31,7 @@ export default function Hero() {
         >
           <span className="hero__badge"><span className="dot" /> Familienbetrieb · Qualität seit 1982</span>
           <h1>Professionelle <em>Gebäude&shy;reinigung</em> <span className="accent">seit 1982</span></h1>
-          <p className="hero__lead">
-            Seit über 40 Jahren sorgen wir in Emmendingen und Umgebung für saubere Büros, Glasfassaden,
-            Photovoltaikanlagen und vieles mehr – zuverlässig, gründlich und mit eigenem Fuhrpark.
-          </p>
+          <p className="hero__lead">{settings.hero.lead}</p>
           <div className="hero__actions">
             <a className="btn btn--light btn--lg" href="#kontakt">
               Kostenloses Angebot <ArrowRight />

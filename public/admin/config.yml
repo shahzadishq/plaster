@@ -1,0 +1,111 @@
+backend:
+  name: github
+  repo: shahzadishq/plaster
+  branch: main
+  # OAuth provider that performs the GitHub login handshake for the admin.
+  # Replace with your deployed OAuth proxy URL (see README "CMS / Admin setup").
+  base_url: https://REPLACE-WITH-YOUR-OAUTH-PROXY
+
+# Uploaded images are committed here and referenced as assets/<file> in content.
+media_folder: "public/assets"
+public_folder: "assets"
+
+site_url: https://shahzadishq.github.io/plaster/
+display_url: https://shahzadishq.github.io/plaster/
+locale: "de"
+
+collections:
+  - name: settings
+    label: "Einstellungen"
+    files:
+      - name: site
+        label: "Farben, Kontakt & Texte"
+        file: "src/content/settings.json"
+        fields:
+          - label: "Farben"
+            name: colors
+            widget: object
+            fields:
+              - { label: "Primär (Hellblau)", name: brand, widget: color }
+              - { label: "Sekundär (Navy)", name: navy, widget: color }
+              - { label: "Akzent (Gold)", name: amber, widget: color }
+          - label: "Kontakt"
+            name: contact
+            widget: object
+            fields:
+              - { label: "Firma", name: company, widget: string }
+              - { label: "Straße", name: street, widget: string }
+              - { label: "PLZ", name: postal, widget: string }
+              - { label: "Ort", name: city, widget: string }
+              - { label: "Land", name: country, widget: string, required: false }
+              - { label: "Telefon (Anzeige)", name: phone, widget: string }
+              - { label: "Telefon (Link, z. B. +49764195257)", name: phoneHref, widget: string }
+              - { label: "E-Mail", name: email, widget: string }
+              - { label: "Web", name: web, widget: string }
+              - { label: "Öffnungszeiten", name: hours, widget: string }
+          - label: "Hero"
+            name: hero
+            widget: object
+            fields:
+              - { label: "Einleitungstext", name: lead, widget: text }
+          - label: "Über uns"
+            name: about
+            widget: object
+            fields:
+              - { label: "Text", name: text, widget: text }
+
+  - name: faq
+    label: "FAQ"
+    files:
+      - name: list
+        label: "Häufige Fragen"
+        file: "src/content/faq.json"
+        fields:
+          - label: "Fragen"
+            name: items
+            widget: list
+            label_singular: "Frage"
+            summary: "{{fields.q}}"
+            fields:
+              - { label: "Frage", name: q, widget: string }
+              - { label: "Antwort", name: a, widget: text }
+
+  - name: services
+    label: "Leistungen"
+    files:
+      - name: list
+        label: "Leistungen"
+        file: "src/content/services.json"
+        fields:
+          - label: "Leistungen"
+            name: items
+            widget: list
+            label_singular: "Leistung"
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "Titel", name: title, widget: string }
+              - { label: "Beschreibung", name: desc, widget: text }
+              - { label: "Bild", name: image, widget: image }
+              - { label: "Bild-Alt-Text", name: alt, widget: string, required: false }
+              - label: "Icon"
+                name: icon
+                widget: select
+                default: building
+                options: [building, window, hardhat, sun, shield, alert, wrench]
+
+  - name: sections
+    label: "Bereiche (ein/aus & Reihenfolge)"
+    files:
+      - name: order
+        label: "Bereiche"
+        file: "src/content/sections.json"
+        fields:
+          - label: "Bereiche"
+            name: items
+            widget: list
+            label_singular: "Bereich"
+            summary: "{{fields.label}} — {{fields.visible}}"
+            fields:
+              - { label: "Name", name: label, widget: string }
+              - { label: "ID (bitte nicht ändern)", name: id, widget: string }
+              - { label: "Sichtbar", name: visible, widget: boolean, default: true }

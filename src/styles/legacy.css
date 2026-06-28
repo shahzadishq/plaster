@@ -18,6 +18,7 @@
   --brand-100:    #cdebfd;
   --brand-50:     #e8f6fe;   /* tint background */
   --accent-amber: #ffc400;   /* logo yellow — used sparingly (stars) */
+  --brand-amber:  #ffc400;   /* alias used by accents/marquee */
 
   /* --- Neutrals --- */
   --white:    #ffffff;

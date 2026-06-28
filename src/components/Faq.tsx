@@ -2,17 +2,11 @@ import { useState } from "react";
 import { ArrowRight, Play } from "lucide-react";
 import { Reveal } from "./motion";
 import { asset } from "@/lib/asset";
+import faqData from "@/content/faq.json";
 
 type QA = { q: string; a: string };
 
-const faqs: QA[] = [
-  { q: "Welche Reinigungsleistungen bietet Pläster Gebäudereinigung an?", a: "Wir übernehmen Unterhalts-, Glas- & Fassaden-, Bauschluss-, Grund-, Photovoltaik-, Reinraum- und Tatortreinigung sowie Teppichbodenreinigung, Geruchsneutralisierung und Desinfektion. Auf Wunsch erstellen wir ein individuelles Reinigungskonzept für Ihr Objekt." },
-  { q: "In welchem Gebiet sind Sie tätig?", a: "Wir sind mit eigenem Fuhrpark in Emmendingen und der gesamten Umgebung im Einsatz – zuverlässig und pünktlich vor Ort. Sprechen Sie uns gerne auf Ihren Standort an." },
-  { q: "Wie erhalte ich ein Angebot?", a: "Ganz einfach: über unser Kontaktformular oder telefonisch unter 07641 95257. Wir erstellen Ihnen ein unverbindliches, kostenloses Angebot – auf Wunsch nach einer Besichtigung vor Ort." },
-  { q: "Arbeiten Sie mit umweltschonenden Reinigungsmitteln?", a: "Ja. Wir setzen auf nachhaltige, materialschonende Reinigungsmittel (u. a. der Buzil-Planta-Linie) und ressourcenbewusste Verfahren – gut für Ihre Oberflächen, Ihre Mitarbeitenden und die Umwelt." },
-  { q: "Reinigen Sie auch außerhalb der Geschäftszeiten?", a: "Selbstverständlich. Wir richten uns flexibel nach Ihrem Betrieb und reinigen auf Wunsch früh morgens, abends oder am Wochenende – ohne Störung Ihres Tagesgeschäfts." },
-  { q: "Übernehmen Sie auch Sonderreinigungen?", a: "Ja – neben der klassischen Gebäudereinigung bieten wir Spezialleistungen wie Photovoltaik-, Reinraum- und Tatortreinigung sowie Gerätevermietung an. Fragen Sie einfach nach Ihrem Anliegen." },
-];
+const faqs: QA[] = faqData.items;
 
 function FaqItem({ q, a, defaultOpen }: QA & { defaultOpen?: boolean }) {
   const [open, setOpen] = useState(!!defaultOpen);
