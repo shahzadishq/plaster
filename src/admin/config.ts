@@ -7,5 +7,6 @@ export const CONTENT_FILES = {
   services: "src/content/services.json",
   faq: "src/content/faq.json",
   settings: "src/content/settings.json",
-  sections: "src/content/sections.json",
+  pages: "src/content/pages.json",
+  posts: "src/content/posts.json",
 } as const;

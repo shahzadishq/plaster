@@ -15,6 +15,10 @@ export const UI: Record<Lang, Record<string, string>> = {
     faqHint: "Fragen & Antworten werden im Tab „FAQ“ bearbeitet.",
     comingSoon: "In Vorbereitung – wird in einem nächsten Schritt ergänzt.",
     language: "Sprache", unsaved: "Nicht gespeicherte Änderungen",
+    addPage: "Seite hinzufügen", addPost: "Beitrag hinzufügen",
+    deleteItem: "Löschen", confirmDelete: "Wirklich löschen?",
+    newPostHint: "Beiträge erscheinen unter /blog. Slug = Teil der Webadresse.",
+    newPageHint: "Eigene Seite, erreichbar unter /slug. „Im Menü“ zeigt sie in der Navigation.",
   },
   en: {
     login: "Log in", password: "Password", loggingIn: "Logging in …",
@@ -29,6 +33,10 @@ export const UI: Record<Lang, Record<string, string>> = {
     faqHint: "Questions & answers are edited in the “FAQ” tab.",
     comingSoon: "Coming soon — added in a next step.",
     language: "Language", unsaved: "Unsaved changes",
+    addPage: "Add page", addPost: "Add post",
+    deleteItem: "Delete", confirmDelete: "Delete this for good?",
+    newPostHint: "Posts appear under /blog. Slug = part of the web address.",
+    newPageHint: "Custom page reachable at /slug. “In menu” shows it in navigation.",
   },
 };
 
@@ -94,6 +102,13 @@ const FIELD: Record<string, [string, string]> = {
   lead: ["Einleitungstext", "Intro text"],
   visible: ["Sichtbar", "Visible"],
   id: ["ID (nicht ändern)", "ID (do not change)"],
+  sections: ["Bereiche (ein/aus & Reihenfolge)", "Sections (toggle & order)"],
+  slug: ["Slug (Webadresse)", "Slug (web address)"],
+  nav: ["Im Menü anzeigen", "Show in menu"],
+  date: ["Datum", "Date"],
+  cover: ["Titelbild (Pfad)", "Cover image (path)"],
+  excerpt: ["Kurzbeschreibung", "Excerpt"],
+  bodyHtml: ["Inhalt (HTML)", "Content (HTML)"],
 };
 
 export function fieldLabel(key: string, lang: Lang): string {

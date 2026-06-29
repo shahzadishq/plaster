@@ -1,17 +1,25 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { asset } from "@/lib/asset";
+import { useContent } from "@/content/store";
 
-const links = [
-  { href: "#ueber-uns", label: "Über uns" },
-  { href: "#leistungen", label: "Leistungen" },
-  { href: "#referenzen", label: "Referenzen" },
-  { href: "#warum", label: "Warum Pläster" },
-  { href: "#faq", label: "FAQ" },
-  { href: "#kontakt", label: "Kontakt" },
+const baseLinks = [
+  { href: "/#ueber-uns", label: "Über uns" },
+  { href: "/#leistungen", label: "Leistungen" },
+  { href: "/#referenzen", label: "Referenzen" },
+  { href: "/#warum", label: "Warum Pläster" },
+  { href: "/#faq", label: "FAQ" },
+  { href: "/#kontakt", label: "Kontakt" },
 ];
 
 export default function Header() {
+  const { pages, posts } = useContent();
+  const navPages = pages.items.filter((p) => p.nav);
+  const links = [
+    ...baseLinks,
+    ...(posts.items.length ? [{ href: "/blog", label: "Blog" }] : []),
+    ...navPages.map((p) => ({ href: `/${p.slug}`, label: p.title })),
+  ];
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -31,7 +39,7 @@ export default function Header() {
   return (
     <header className={`header${scrolled ? " is-scrolled" : ""}`} id="header">
       <div className="container nav">
-        <a className="brand__logo" href="#top" aria-label="Pläster Gebäudereinigung GmbH – Startseite">
+        <a className="brand__logo" href="/" aria-label="Pläster Gebäudereinigung GmbH – Startseite">
           <img src={asset("assets/Plaster-logo.webp")} alt="Pläster Gebäudereinigung GmbH Logo" width={200} height={50} />
         </a>
 
@@ -42,14 +50,14 @@ export default function Header() {
             </a>
           ))}
           <span className="nav__cta">
-            <a className="btn btn--primary" href="#kontakt" onClick={() => setOpen(false)}>
+            <a className="btn btn--primary" href="/#kontakt" onClick={() => setOpen(false)}>
               Angebot anfordern
             </a>
           </span>
         </nav>
 
         <div className="nav__actions">
-          <a className="btn btn--primary" href="#kontakt">Angebot anfordern</a>
+          <a className="btn btn--primary" href="/#kontakt">Angebot anfordern</a>
           <button
             className="nav__toggle"
             id="navToggle"

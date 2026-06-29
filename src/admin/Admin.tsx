@@ -8,7 +8,14 @@ import { UI, type Lang } from "./i18n";
 import Field, { deepClone } from "./Fields";
 import "./admin.css";
 
-type Tab = "pages" | "posts" | "media" | "services" | "faq" | "settings" | "sections";
+type Tab = "pages" | "posts" | "media" | "services" | "faq" | "settings";
+
+const today = () => new Date().toISOString().slice(0, 10);
+const slugify = (s: string) =>
+  s.toLowerCase().replace(/[äàá]/g, "a").replace(/[öòó]/g, "o").replace(/[üùú]/g, "u").replace(/ß/g, "ss")
+    .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "neu";
+const PAGE_TEMPLATE = { slug: "neue-seite", title: "Neue Seite", nav: false, bodyHtml: "<p>Inhalt …</p>" };
+const POST_TEMPLATE = { slug: "neuer-beitrag", title: "Neuer Beitrag", date: today(), cover: "", excerpt: "", bodyHtml: "<p>Inhalt …</p>" };
 
 export default function Admin() {
   const [lang, setLang] = useState<Lang>("de");
@@ -21,6 +28,8 @@ export default function Admin() {
   const [draft, setDraft] = useState<SiteContent>(() => deepClone(defaultContent));
   const [saved, setSaved] = useState<SiteContent>(() => deepClone(defaultContent));
   const [tab, setTab] = useState<Tab>("pages");
+  const [selPage, setSelPage] = useState<"home" | number>("home");
+  const [selPost, setSelPost] = useState<number | null>(null);
   const [status, setStatus] = useState<{ kind: "ok" | "err"; msg: string } | null>(null);
 
   const dirty = useMemo(() => JSON.stringify(draft) !== JSON.stringify(saved), [draft, saved]);
@@ -95,8 +104,15 @@ export default function Admin() {
     { id: "services", label: ui.services },
     { id: "faq", label: ui.faq },
     { id: "settings", label: ui.settings },
-    { id: "sections", label: ui.sections },
   ];
+
+  // pages / posts array helpers
+  const pageItems = draft.pages.items as Array<typeof PAGE_TEMPLATE>;
+  const postItems = draft.posts.items as Array<typeof POST_TEMPLATE>;
+  const setPages = (items: unknown) => patch("pages", { ...draft.pages, items: items as typeof draft.pages.items });
+  const setPosts = (items: unknown) => patch("posts", { ...draft.posts, items: items as typeof draft.posts.items });
+  const addPage = () => { const next = [...pageItems, { ...PAGE_TEMPLATE, slug: `seite-${pageItems.length + 1}` }]; setPages(next); setSelPage(next.length - 1); };
+  const addPost = () => { const next = [...postItems, { ...POST_TEMPLATE, date: today(), slug: `beitrag-${postItems.length + 1}` }]; setPosts(next); setSelPost(next.length - 1); };
 
   return (
     <div className="cms">
@@ -130,12 +146,52 @@ export default function Admin() {
           {tab === "pages" && (
             <>
               <div className="cms-pagelist">
-                <button className="is-active">🏠 {ui.homepage}</button>
-                <button className="cms-disabled" title={ui.comingSoon} disabled>+ {lang === "de" ? "Seite hinzufügen" : "Add page"}</button>
+                <button className={selPage === "home" ? "is-active" : ""} onClick={() => setSelPage("home")}>🏠 {ui.homepage}</button>
+                {pageItems.map((p, i) => (
+                  <button key={i} className={selPage === i ? "is-active" : ""} onClick={() => setSelPage(i)}>{p.title || p.slug}</button>
+                ))}
+                <button className="cms-add" onClick={addPage}>+ {ui.addPage}</button>
               </div>
-              <p className="cms-hint">{ui.servicesHint} · {ui.faqHint}</p>
-              <Field value={draft.homepage} lang={lang} ui={ui}
-                onChange={(v) => patch("homepage", v as SiteContent["homepage"])} />
+
+              {selPage === "home" ? (
+                <>
+                  <p className="cms-hint">{ui.servicesHint} · {ui.faqHint}</p>
+                  <Field value={draft.homepage} lang={lang} ui={ui}
+                    onChange={(v) => patch("homepage", v as SiteContent["homepage"])} />
+                </>
+              ) : (
+                <>
+                  <p className="cms-hint">{ui.newPageHint}</p>
+                  <Field value={pageItems[selPage]} lang={lang} ui={ui}
+                    onChange={(v) => setPages(pageItems.map((p, i) => (i === selPage ? v : p)))} />
+                  <button className="cms-btn cms-del-btn" onClick={() => {
+                    if (confirm(ui.confirmDelete)) { setPages(pageItems.filter((_, i) => i !== selPage)); setSelPage("home"); }
+                  }}>{ui.deleteItem}</button>
+                </>
+              )}
+            </>
+          )}
+
+          {tab === "posts" && (
+            <>
+              <div className="cms-pagelist">
+                {postItems.map((p, i) => (
+                  <button key={i} className={selPost === i ? "is-active" : ""} onClick={() => setSelPost(i)}>{p.title || p.slug}</button>
+                ))}
+                <button className="cms-add" onClick={addPost}>+ {ui.addPost}</button>
+              </div>
+              {selPost !== null && postItems[selPost] ? (
+                <>
+                  <p className="cms-hint">{ui.newPostHint}</p>
+                  <Field value={postItems[selPost]} lang={lang} ui={ui}
+                    onChange={(v) => setPosts(postItems.map((p, i) => (i === selPost ? v : p)))} />
+                  <button className="cms-btn cms-del-btn" onClick={() => {
+                    if (confirm(ui.confirmDelete)) { setPosts(postItems.filter((_, i) => i !== selPost)); setSelPost(null); }
+                  }}>{ui.deleteItem}</button>
+                </>
+              ) : (
+                <p className="cms-hint">{ui.newPostHint}</p>
+              )}
             </>
           )}
 
@@ -154,13 +210,12 @@ export default function Admin() {
               onChange={(v) => patch("settings", v as SiteContent["settings"])} />
           )}
 
-          {tab === "sections" && (
-            <Field value={draft.sections.items} lang={lang} ui={ui}
-              onChange={(v) => patch("sections", { ...draft.sections, items: v as typeof draft.sections.items })} />
-          )}
-
-          {(tab === "posts" || tab === "media") && (
-            <div className="cms-soon">{ui.comingSoon}</div>
+          {tab === "media" && (
+            <div className="cms-soon">
+              {lang === "de"
+                ? "Bilder: Pfad im Feld „Bildpfad“ eintragen (z. B. assets/mein-bild.webp) und die Datei in public/assets ablegen. Direkt-Upload folgt."
+                : "Images: enter the path in the image field (e.g. assets/my-image.webp) and place the file in public/assets. Direct upload coming next."}
+            </div>
           )}
         </section>
 
