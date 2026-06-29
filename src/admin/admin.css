@@ -69,7 +69,10 @@ textarea.cms-input { resize: vertical; line-height: 1.45; }
 .cms-pagelist button.is-active { background: var(--c-navy); color: #fff; border-color: var(--c-navy); }
 .cms-disabled { opacity: .5; cursor: not-allowed !important; }
 .cms-hint { background: #eff6ff; color: #1e40af; padding: 9px 12px; border-radius: 8px; font-size: 13px; margin: 0 0 16px; }
-.cms-soon { padding: 40px; text-align: center; color: #64748b; font-size: 15px; }
+.cms-soon { padding: 40px; text-align: center; color: #64748b; font-size: 15px; line-height: 1.6; }
+.cms-del-btn { margin-top: 18px; color: #b91c1c; border-color: #fecaca; }
+.cms-del-btn:hover { background: #fef2f2; }
+.cms-pagelist { flex-wrap: wrap; }
 
 /* recursive fields */
 .cms-object { display: flex; flex-direction: column; gap: 14px; }

@@ -1,0 +1,12 @@
+{
+  "items": [
+    {
+      "slug": "willkommen",
+      "title": "Willkommen in unserem Blog",
+      "date": "2026-06-29",
+      "cover": "assets/469479909_122124989606401905_1792001857027702583_n.jpg",
+      "excerpt": "Neuigkeiten, Tipps und Einblicke rund um professionelle Gebäudereinigung von Pläster.",
+      "bodyHtml": "<p>Willkommen! Hier teilen wir künftig Neuigkeiten aus unserem Familienbetrieb, praktische Reinigungstipps und Einblicke in unsere Arbeit.</p><p>Diesen Beitrag können Sie im CMS unter <em>Beiträge</em> bearbeiten oder löschen.</p>"
+    }
+  ]
+}

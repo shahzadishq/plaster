@@ -2,7 +2,7 @@ import React, { Suspense, lazy } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import "./styles/legacy.css";
-import App from "./App";
+import Site from "./Site";
 
 // The custom admin lives at /admin and is code-split so it never ships with the
 // public site bundle (and vice-versa).
@@ -16,7 +16,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <Admin />
       </Suspense>
     ) : (
-      <App />
+      <Site />
     )}
   </React.StrictMode>
 );

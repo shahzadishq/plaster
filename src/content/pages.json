@@ -1,0 +1,10 @@
+{
+  "items": [
+    {
+      "slug": "impressum",
+      "title": "Impressum",
+      "nav": false,
+      "bodyHtml": "<h2>Angaben gemäß § 5 TMG</h2><p>Pläster Gebäudereinigung GmbH<br/>Wiesenstraße 16<br/>79312 Emmendingen</p><p><strong>Telefon:</strong> +49 (0) 7641 95257<br/><strong>E-Mail:</strong> info@plaester.de</p><p>Bitte ergänzen Sie hier Ihre vollständigen rechtlichen Angaben (Geschäftsführung, Handelsregister, USt-IdNr.).</p>"
+    }
+  ]
+}

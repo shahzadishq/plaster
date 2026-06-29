@@ -25,22 +25,22 @@ export default function Footer() {
           <div className="footer__col">
             <h4>Leistungen</h4>
             <ul>
-              <li><a href="#leistungen">Unterhaltsreinigung</a></li>
-              <li><a href="#leistungen">Glas- &amp; Fassadenreinigung</a></li>
-              <li><a href="#leistungen">Bauschlussreinigung</a></li>
-              <li><a href="#leistungen">Photovoltaik-Reinigung</a></li>
-              <li><a href="#leistungen">Reinraumreinigung</a></li>
+              <li><a href="/#leistungen">Unterhaltsreinigung</a></li>
+              <li><a href="/#leistungen">Glas- &amp; Fassadenreinigung</a></li>
+              <li><a href="/#leistungen">Bauschlussreinigung</a></li>
+              <li><a href="/#leistungen">Photovoltaik-Reinigung</a></li>
+              <li><a href="/#leistungen">Reinraumreinigung</a></li>
             </ul>
           </div>
 
           <div className="footer__col">
             <h4>Unternehmen</h4>
             <ul>
-              <li><a href="#ueber-uns">Über uns</a></li>
-              <li><a href="#referenzen">Referenzen</a></li>
-              <li><a href="#warum">Warum Pläster</a></li>
-              <li><a href="#faq">FAQ</a></li>
-              <li><a href="#kontakt">Kontakt</a></li>
+              <li><a href="/#ueber-uns">Über uns</a></li>
+              <li><a href="/#referenzen">Referenzen</a></li>
+              <li><a href="/#warum">Warum Pläster</a></li>
+              <li><a href="/#faq">FAQ</a></li>
+              <li><a href="/#kontakt">Kontakt</a></li>
             </ul>
           </div>
 
@@ -58,9 +58,9 @@ export default function Footer() {
         <div className="footer__bottom">
           <span>© {year} Pläster Gebäudereinigung GmbH. Alle Rechte vorbehalten.</span>
           <span className="footer__legal">
-            <a href="#">Impressum</a>
-            <a href="#">Datenschutz</a>
-            <a href="#">AGB</a>
+            <a href="/impressum">Impressum</a>
+            <a href="/datenschutz">Datenschutz</a>
+            <a href="/agb">AGB</a>
           </span>
         </div>
       </div>
