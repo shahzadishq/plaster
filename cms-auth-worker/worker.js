@@ -1,164 +1,199 @@
 /**
- * Pläster CMS — password auth backend (Cloudflare Worker)
- * ───────────────────────────────────────────────────────
- * Lets you log into the Decap admin (/admin) with YOUR OWN PASSWORD instead of
- * a GitHub account. When the password is correct, the worker hands Decap a
- * GitHub token (stored as a Worker secret) so your content edits are committed
- * to the repository on your behalf. The token never appears in the page source
- * and is only released after a correct password.
+ * Pläster CMS — auth + save API (Cloudflare Worker)
+ * ──────────────────────────────────────────────────
+ * Backend for the custom Pläster admin at /admin. You log in with your own
+ * password; on success the worker sets a signed, HttpOnly session cookie. Saving
+ * content commits JSON/images to the GitHub repo using a server-side token that
+ * NEVER reaches the browser.
  *
- * This is a STANDALONE worker — it is NOT the website. Deploy it separately
- * (see README.md). Do NOT connect it to the website's Vite build.
+ * Standalone worker — NOT the website. Deploy separately (see README.md).
  *
  * Required Worker secrets (Settings → Variables and Secrets → "Encrypt"):
- *   CMS_PASSWORD   the password you will type to log in
- *   GITHUB_TOKEN   a fine-grained GitHub Personal Access Token, scoped to the
- *                  repo shahzadishq/plaster, with:
- *                    • Contents  → Read and write
- *                    • Metadata  → Read-only  (granted automatically)
+ *   CMS_PASSWORD     the password you type to log in
+ *   GITHUB_TOKEN     fine-grained PAT for shahzadishq/plaster, Contents: Read+write
+ *   SESSION_SECRET   any long random string (signs the session cookie)
  *
- * Then in public/admin/config.yml set:
- *   backend.base_url: https://<this-worker-subdomain>.workers.dev
+ * Optional plain-text variable:
+ *   ALLOWED_ORIGIN   the admin site origin; defaults to
+ *                    https://plaster.shahzadishaq.workers.dev
  */
 
-const PROVIDER = "github";
+const REPO = "shahzadishq/plaster";
+const BRANCH = "main";
+const DEFAULT_ORIGIN = "https://plaster.shahzadishaq.workers.dev";
+const SESSION_TTL = 60 * 60 * 12; // 12 hours
+const COOKIE = "pl_session";
 
-/** Constant-time-ish comparison so a wrong password can't be guessed by timing. */
+// ── small crypto helpers (HMAC-SHA256 signed token) ────────────────────────
+const enc = new TextEncoder();
+function b64url(bytes) {
+  let s = btoa(String.fromCharCode(...new Uint8Array(bytes)));
+  return s.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+function b64urlToBytes(str) {
+  str = str.replace(/-/g, "+").replace(/_/g, "/");
+  while (str.length % 4) str += "=";
+  return Uint8Array.from(atob(str), (c) => c.charCodeAt(0));
+}
+async function hmacKey(secret) {
+  return crypto.subtle.importKey("raw", enc.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, [
+    "sign",
+    "verify",
+  ]);
+}
+async function sign(payloadObj, secret) {
+  const key = await hmacKey(secret);
+  const payload = b64url(enc.encode(JSON.stringify(payloadObj)));
+  const sig = await crypto.subtle.sign("HMAC", key, enc.encode(payload));
+  return `${payload}.${b64url(sig)}`;
+}
+async function verify(token, secret) {
+  if (!token || token.indexOf(".") < 0) return null;
+  const [payload, sig] = token.split(".");
+  const key = await hmacKey(secret);
+  const ok = await crypto.subtle.verify("HMAC", key, b64urlToBytes(sig), enc.encode(payload));
+  if (!ok) return null;
+  try {
+    const data = JSON.parse(new TextDecoder().decode(b64urlToBytes(payload)));
+    if (data.exp && Date.now() / 1000 > data.exp) return null;
+    return data;
+  } catch {
+    return null;
+  }
+}
 function safeEqual(a, b) {
-  const enc = new TextEncoder();
   const ab = enc.encode(a);
   const bb = enc.encode(b);
-  const len = Math.max(ab.length, bb.length);
   let diff = ab.length ^ bb.length;
+  const len = Math.max(ab.length, bb.length);
   for (let i = 0; i < len; i++) diff |= (ab[i] || 0) ^ (bb[i] || 0);
   return diff === 0;
 }
+function getCookie(req, name) {
+  const h = req.headers.get("Cookie") || "";
+  const m = h.match(new RegExp("(?:^|; )" + name + "=([^;]+)"));
+  return m ? decodeURIComponent(m[1]) : null;
+}
 
-const SECURITY_HEADERS = {
-  "Cache-Control": "no-store",
-  "X-Content-Type-Options": "nosniff",
-  "X-Frame-Options": "SAMEORIGIN",
-  "Referrer-Policy": "no-referrer",
-};
-
-function html(body, init = {}) {
-  return new Response(body, {
+// ── CORS ───────────────────────────────────────────────────────────────────
+function corsHeaders(env, req) {
+  const allowed = env.ALLOWED_ORIGIN || DEFAULT_ORIGIN;
+  const origin = req.headers.get("Origin");
+  return {
+    "Access-Control-Allow-Origin": origin === allowed ? origin : allowed,
+    "Access-Control-Allow-Credentials": "true",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+    Vary: "Origin",
+  };
+}
+function json(body, env, req, init = {}) {
+  return new Response(JSON.stringify(body), {
     ...init,
-    headers: { "Content-Type": "text/html; charset=UTF-8", ...SECURITY_HEADERS, ...(init.headers || {}) },
+    headers: {
+      "Content-Type": "application/json; charset=UTF-8",
+      "Cache-Control": "no-store",
+      ...corsHeaders(env, req),
+      ...(init.headers || {}),
+    },
   });
 }
 
-function loginPage({ error = "" } = {}) {
-  return `<!doctype html>
-<html lang="de">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="robots" content="noindex" />
-  <title>Pläster · Anmeldung</title>
-  <style>
-    :root { --brand:#019AEA; --navy:#05397E; }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; min-height: 100vh; display: grid; place-items: center;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      background: linear-gradient(135deg, var(--navy), var(--brand));
-      color: #0f172a; padding: 24px;
-    }
-    .card {
-      width: 100%; max-width: 380px; background: #fff; border-radius: 16px;
-      padding: 32px 28px; box-shadow: 0 24px 60px rgba(5,57,126,.35);
-    }
-    .brand { font-weight: 800; font-size: 22px; color: var(--navy); letter-spacing: -.02em; }
-    .brand span { color: var(--brand); }
-    p.sub { margin: 6px 0 22px; color: #64748b; font-size: 14px; }
-    label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #334155; }
-    input {
-      width: 100%; padding: 12px 14px; border: 1px solid #cbd5e1; border-radius: 10px;
-      font-size: 15px; outline: none; transition: border-color .15s, box-shadow .15s;
-    }
-    input:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(1,154,234,.2); }
-    button {
-      width: 100%; margin-top: 18px; padding: 12px 16px; border: 0; border-radius: 10px;
-      background: var(--brand); color: #fff; font-size: 15px; font-weight: 700; cursor: pointer;
-      transition: background .15s;
-    }
-    button:hover { background: var(--navy); }
-    .error { margin: 0 0 16px; padding: 10px 12px; border-radius: 10px; background: #fef2f2; color: #b91c1c; font-size: 14px; }
-  </style>
-</head>
-<body>
-  <form class="card" method="post" autocomplete="off">
-    <div class="brand">Pläster<span>.</span> CMS</div>
-    <p class="sub">Bitte geben Sie Ihr Passwort ein, um Inhalte zu bearbeiten.</p>
-    ${error ? `<p class="error">${error}</p>` : ""}
-    <label for="password">Passwort</label>
-    <input id="password" name="password" type="password" required autofocus />
-    <button type="submit">Anmelden</button>
-  </form>
-</body>
-</html>`;
+// ── GitHub commit ────────────────────────────────────────────────────────────
+async function ghHeaders(env) {
+  return {
+    Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+    Accept: "application/vnd.github+json",
+    "User-Agent": "plaster-cms",
+    "X-GitHub-Api-Version": "2022-11-28",
+  };
+}
+function toBase64(str) {
+  // UTF-8 safe base64 for file contents
+  const bytes = enc.encode(str);
+  let bin = "";
+  for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+  return btoa(bin);
+}
+async function putFile(env, path, contentBase64, message) {
+  const base = `https://api.github.com/repos/${REPO}/contents/${encodeURIComponent(path).replace(/%2F/g, "/")}`;
+  const headers = await ghHeaders(env);
+  // current sha (if file exists)
+  let sha;
+  const cur = await fetch(`${base}?ref=${BRANCH}`, { headers });
+  if (cur.ok) sha = (await cur.json()).sha;
+  const res = await fetch(base, {
+    method: "PUT",
+    headers: { ...headers, "Content-Type": "application/json" },
+    body: JSON.stringify({ message, content: contentBase64, branch: BRANCH, sha }),
+  });
+  if (!res.ok) throw new Error(`GitHub PUT ${path} failed: ${res.status} ${await res.text()}`);
+  return res.json();
 }
 
-function handoffPage() {
-  // The token is injected server-side just before sending; see fetch handler.
-  return (token) => `<!doctype html>
-<html lang="de">
-<head><meta charset="utf-8" /><meta name="robots" content="noindex" /><title>Anmeldung …</title></head>
-<body>
-  <p style="font-family:system-ui,sans-serif;color:#334155">Anmeldung abgeschlossen – dieses Fenster kann geschlossen werden.</p>
-  <script>
-    (function () {
-      var message = "authorization:${PROVIDER}:success:" + JSON.stringify({ token: ${JSON.stringify(
-        token
-      )}, provider: "${PROVIDER}" });
-      function receive(e) {
-        if (window.opener) window.opener.postMessage(message, e.origin);
-        window.removeEventListener("message", receive, false);
-      }
-      window.addEventListener("message", receive, false);
-      if (window.opener) window.opener.postMessage("authorizing:${PROVIDER}", "*");
-    })();
-  </script>
-</body>
-</html>`;
-}
-
+// ── handler ──────────────────────────────────────────────────────────────────
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    const path = url.pathname;
 
-    if (url.pathname === "/auth") {
-      if (!env.CMS_PASSWORD || !env.GITHUB_TOKEN) {
-        return new Response(
-          "Worker not configured. Set the CMS_PASSWORD and GITHUB_TOKEN secrets.",
-          { status: 500, headers: SECURITY_HEADERS }
-        );
-      }
-
-      if (request.method === "GET") {
-        return html(loginPage());
-      }
-
-      if (request.method === "POST") {
-        const form = await request.formData();
-        const password = String(form.get("password") || "");
-
-        // Blunt brute-force attempts with a small fixed delay.
-        await new Promise((r) => setTimeout(r, 400));
-
-        if (!safeEqual(password, env.CMS_PASSWORD)) {
-          return html(loginPage({ error: "Falsches Passwort. Bitte erneut versuchen." }), { status: 401 });
-        }
-
-        return html(handoffPage()(env.GITHUB_TOKEN));
-      }
-
-      return new Response("Method not allowed", { status: 405, headers: SECURITY_HEADERS });
+    if (request.method === "OPTIONS") {
+      return new Response(null, { status: 204, headers: corsHeaders(env, request) });
     }
 
-    return new Response("Pläster CMS auth worker is running. Decap should call /auth.", {
-      headers: { "Content-Type": "text/plain; charset=UTF-8", ...SECURITY_HEADERS },
-    });
+    const configured = env.CMS_PASSWORD && env.GITHUB_TOKEN && env.SESSION_SECRET;
+
+    // POST /api/login {password}
+    if (path === "/api/login" && request.method === "POST") {
+      if (!configured) return json({ error: "Worker not configured (CMS_PASSWORD/GITHUB_TOKEN/SESSION_SECRET)." }, env, request, { status: 500 });
+      const { password } = await request.json().catch(() => ({}));
+      await new Promise((r) => setTimeout(r, 350));
+      if (!safeEqual(String(password || ""), env.CMS_PASSWORD)) {
+        return json({ error: "Falsches Passwort." }, env, request, { status: 401 });
+      }
+      const token = await sign({ exp: Math.floor(Date.now() / 1000) + SESSION_TTL }, env.SESSION_SECRET);
+      return json({ ok: true }, env, request, {
+        headers: {
+          "Set-Cookie": `${COOKIE}=${encodeURIComponent(token)}; HttpOnly; Secure; SameSite=None; Path=/; Max-Age=${SESSION_TTL}`,
+        },
+      });
+    }
+
+    // GET /api/me
+    if (path === "/api/me" && request.method === "GET") {
+      const data = configured ? await verify(getCookie(request, COOKIE), env.SESSION_SECRET) : null;
+      return json({ authenticated: !!data }, env, request);
+    }
+
+    // POST /api/logout
+    if (path === "/api/logout" && request.method === "POST") {
+      return json({ ok: true }, env, request, {
+        headers: { "Set-Cookie": `${COOKIE}=; HttpOnly; Secure; SameSite=None; Path=/; Max-Age=0` },
+      });
+    }
+
+    // POST /api/save {files:[{path,content,encoding?}], message}
+    if (path === "/api/save" && request.method === "POST") {
+      if (!configured) return json({ error: "Worker not configured." }, env, request, { status: 500 });
+      const session = await verify(getCookie(request, COOKIE), env.SESSION_SECRET);
+      if (!session) return json({ error: "Nicht angemeldet." }, env, request, { status: 401 });
+      const body = await request.json().catch(() => ({}));
+      const files = Array.isArray(body.files) ? body.files : [];
+      if (!files.length) return json({ error: "Keine Dateien." }, env, request, { status: 400 });
+      const message = body.message || "Inhalt über das Pläster CMS aktualisiert";
+      try {
+        const results = [];
+        for (const f of files) {
+          const contentB64 = f.encoding === "base64" ? f.content : toBase64(f.content);
+          const r = await putFile(env, f.path, contentB64, message);
+          results.push({ path: f.path, commit: r.commit && r.commit.sha });
+        }
+        return json({ ok: true, results }, env, request);
+      } catch (e) {
+        return json({ error: String(e && e.message ? e.message : e) }, env, request, { status: 502 });
+      }
+    }
+
+    return json({ name: "plaster-cms", endpoints: ["/api/login", "/api/me", "/api/logout", "/api/save"] }, env, request);
   },
 };

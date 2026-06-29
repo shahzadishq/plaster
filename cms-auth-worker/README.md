@@ -1,92 +1,79 @@
-# Pläster CMS — password login (Cloudflare Worker)
+# Pläster CMS — auth + save worker (Cloudflare)
 
-This small, **standalone** Cloudflare Worker lets you log into the content editor
-at `/admin` with **your own password** instead of a GitHub account. When the
-password is correct, the worker hands the editor a GitHub token (stored as a
-secret) so your edits are saved straight to the repository.
+This **standalone** Cloudflare Worker is the backend for the custom Pläster admin
+at `/admin`. You log in with **your own password**; on success the worker sets a
+signed, HttpOnly session cookie. Saving content commits the JSON files (and, later,
+images) to the GitHub repo using a server-side token that **never reaches the
+browser** — more secure than a git-based editor.
 
-It is **not** the website. Deploy it as its own worker, once. After that you only
-ever touch the `/admin` page to edit content.
+It is **not** the website. Deploy it once as its own worker.
 
 ---
 
 ## What you need first
 
-1. **A password** you'll use to log in (pick anything — it's separate from GitHub).
-2. **A GitHub token** the worker uses to save edits:
-   - Go to GitHub → **Settings → Developer settings → Personal access tokens →
-     Fine-grained tokens → Generate new token**.
-   - **Repository access:** Only select repositories → `shahzadishq/plaster`.
-   - **Permissions:** **Contents → Read and write** (Metadata read-only is added
-     automatically). Nothing else is needed.
-   - Set an expiry you're comfortable with, generate, and copy the token
-     (starts with `github_pat_…`). You'll paste it in step 3 below.
+1. **A password** for logging in (anything you like).
+2. **A GitHub token** for saving edits:
+   - GitHub → Settings → Developer settings → Personal access tokens →
+     **Fine-grained tokens → Generate**.
+   - Repository access: only `shahzadishq/plaster`.
+   - Permissions: **Contents → Read and write** (Metadata read-only is automatic).
+   - Copy the `github_pat_…` value.
+3. **A session secret** — any long random string (e.g. from a password manager).
 
 ---
 
-## Deploy (two ways — pick one)
+## Deploy
 
-### Option 1 — Cloudflare dashboard (no tools)
+### Dashboard (no tools)
+1. Cloudflare → Workers & Pages → **Create → Worker**, name it `plaster-cms-auth`,
+   deploy, then **Edit code**.
+2. Paste the contents of [`worker.js`](./worker.js), **Save and deploy**.
+3. **Settings → Variables and Secrets** → add three **secrets** (Encrypt):
+   - `CMS_PASSWORD` → your password
+   - `GITHUB_TOKEN` → the `github_pat_…`
+   - `SESSION_SECRET` → your long random string
 
-1. Cloudflare dashboard → **Workers & Pages → Create → Worker**. Name it
-   `plaster-cms-auth`, deploy the default, then **Edit code**.
-2. Delete the sample code, paste the contents of [`worker.js`](./worker.js), **Save and deploy**.
-3. Open the worker's **Settings → Variables and Secrets** and add two secrets
-   (choose **Encrypt** for each):
-   - `CMS_PASSWORD` → the password you chose.
-   - `GITHUB_TOKEN` → the `github_pat_…` token from above.
-4. Note the worker URL, e.g. `https://plaster-cms-auth.<your-subdomain>.workers.dev`.
-
-### Option 2 — Wrangler CLI (from this folder)
-
+### Wrangler CLI (from this folder)
 ```bash
 cd cms-auth-worker
 npx wrangler deploy
-npx wrangler secret put CMS_PASSWORD   # paste your password when prompted
-npx wrangler secret put GITHUB_TOKEN   # paste the github_pat_… token
+npx wrangler secret put CMS_PASSWORD
+npx wrangler secret put GITHUB_TOKEN
+npx wrangler secret put SESSION_SECRET
 ```
 
 ---
 
-## Point the editor at the worker
+## Connect the admin to the worker
 
-In [`../public/admin/config.yml`](../public/admin/config.yml), set `base_url` to
-your worker URL (no trailing slash):
+The admin already points at `https://plaster-cms-auth.shahzadishaq.workers.dev`
+(see `src/admin/config.ts`). If your worker URL differs, update `WORKER_BASE`
+there and push.
 
-```yaml
-backend:
-  name: github
-  repo: shahzadishq/plaster
-  branch: main
-  base_url: https://plaster-cms-auth.<your-subdomain>.workers.dev
-```
+Optional plain-text variable on the worker: `ALLOWED_ORIGIN` — defaults to
+`https://plaster.shahzadishaq.workers.dev`. Set it if your site origin changes.
 
-Commit and push so the live site picks it up.
+---
+
+## API
+
+| Method & path     | Auth        | Purpose                                   |
+|-------------------|-------------|-------------------------------------------|
+| `POST /api/login` | password    | Verify password, set session cookie       |
+| `GET  /api/me`    | cookie      | `{ authenticated: boolean }`              |
+| `POST /api/logout`| —           | Clear the session cookie                  |
+| `POST /api/save`  | cookie      | Commit `{ files:[{path,content}] }` to GitHub |
+
+The cookie is `HttpOnly; Secure; SameSite=None` so the admin (a different origin)
+can use it via `fetch(..., { credentials: "include" })`.
 
 ---
 
 ## Use it
+1. Visit `https://plaster.shahzadishaq.workers.dev/admin`.
+2. Enter your password.
+3. Edit content with live preview, then **Save & publish** — the change is
+   committed and the site redeploys (~1 min).
 
-1. Visit `https://plaster.shahzadishaq.workers.dev/admin/`.
-2. Click **Login** — a Pläster-branded popup asks for your password.
-3. Enter the password → you're in. Edit text, colours, FAQs, services and
-   sections; **Publish** saves the change to the repo and the site redeploys
-   automatically.
-
-To change the password later, update the `CMS_PASSWORD` secret on the worker.
-To rotate access, regenerate the GitHub token and update `GITHUB_TOKEN`.
-
----
-
-## How it works / security notes
-
-- The editor never sees the GitHub token until the **correct password** is
-  entered; the token lives only as an encrypted Worker secret and is released
-  through the standard login handshake.
-- Wrong passwords are rejected with a constant-time comparison and a small fixed
-  delay to blunt guessing.
-- Anyone can open `/admin`, but without the password they get no token and can't
-  read or write anything. If you want to hide the page entirely, you can also put
-  **Cloudflare Access** in front of the `/admin` path — optional, not required.
-- The GitHub token is scoped to this one repo with contents-only write, so its
-  blast radius is limited to editing site content.
+Change the password anytime by updating the `CMS_PASSWORD` secret.

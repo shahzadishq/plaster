@@ -74,25 +74,31 @@ Testimonials (sample quotes/names), footer social + Impressum/Datenschutz/AGB
 links, and the contact form endpoint (currently a simulated submit in
 `src/components/Contact.tsx`).
 
-## CMS / Admin (Decap CMS)
+## CMS / Admin (custom, built-in)
 
-Content is editable via a WordPress-like admin at **`/admin/`**. It edits JSON in
-`src/content/` and commits to GitHub; Cloudflare rebuilds and publishes (changes
-go live shortly after saving).
+The admin is our **own** React app at **`/admin`** (no third-party CMS). Because it
+reuses the real site components, it shows a **true live preview** of your draft.
+All content lives as JSON in `src/content/` and is read at runtime through a
+content store (`src/content/store.tsx`); the admin edits a draft and commits it to
+GitHub, then Cloudflare rebuilds (changes go live ~1 min after saving).
 
-Editable in v1: **brand colors**, **contact details**, **hero & about text**,
-**FAQs** (add/remove/reorder), **services** (text + image + icon), and
-**section show/hide + reorder** (`src/content/sections.json`).
+Editable: the **whole homepage** (hero, stats, "Warum Pläster", testimonials, CTA,
+all section headings, marquee), **services**, **FAQs**, **settings** (brand colors,
+contact, hero/about text) and **section show/hide + reorder**. UI switches between
+**Deutsch / English**.
+
+### Architecture
+- `src/admin/` — the admin SPA (login, recursive field editor, live preview, i18n).
+- `src/content/` — JSON content + `store.tsx` (`useContent`, `ContentProvider`).
+- `cms-auth-worker/` — the standalone auth/save worker (password login → signed
+  cookie; `/api/save` commits to GitHub with a **server-side** token).
 
 ### One-time login setup (password — no GitHub account needed)
-Login uses a small Cloudflare Worker so you sign in with **your own password**
-instead of a GitHub account. Full steps are in
-[`cms-auth-worker/README.md`](cms-auth-worker/README.md). In short:
+Full steps in [`cms-auth-worker/README.md`](cms-auth-worker/README.md). In short:
 1. Deploy the worker in `cms-auth-worker/` (dashboard paste or `npx wrangler deploy`).
-2. Set two Worker secrets: `CMS_PASSWORD` (your password) and `GITHUB_TOKEN`
-   (a fine-grained PAT for `shahzadishq/plaster` with Contents read/write).
-3. In `public/admin/config.yml` set `backend.base_url` to the worker URL.
-4. Visit `/admin/`, click **Login**, enter your password.
+2. Set three Worker secrets: `CMS_PASSWORD`, `GITHUB_TOKEN` (fine-grained PAT for
+   `shahzadishq/plaster`, Contents read/write) and `SESSION_SECRET` (random string).
+3. Visit `/admin`, enter your password.
 
-> Local editing without the worker: set `local_backend: true` in config.yml and
-> run `npx decap-server` alongside `npm run dev`.
+> Roadmap: additional **Pages** and a **Posts/blog** section (routing + renderer)
+> are the next phase; the Posts/Media tabs are placeholders until then.
