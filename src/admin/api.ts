@@ -17,4 +17,6 @@ export const api = {
   logout: () => req("/api/logout", { method: "POST" }),
   save: (files: { path: string; content: string }[], message?: string) =>
     req("/api/save", { method: "POST", body: JSON.stringify({ files, message }) }),
+  upload: (filename: string, contentBase64: string) =>
+    req("/api/upload", { method: "POST", body: JSON.stringify({ filename, contentBase64 }) }),
 };

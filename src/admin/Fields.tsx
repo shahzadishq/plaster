@@ -1,4 +1,5 @@
 import { fieldLabel, type Lang } from "./i18n";
+import ImageField from "./ImageField";
 
 type Props = {
   value: unknown;
@@ -9,7 +10,8 @@ type Props = {
 };
 
 const COLOR_KEYS = new Set(["brand", "navy", "amber"]);
-const LONG_KEYS = new Set(["titleHtml", "desc", "text", "quote", "a", "sub", "lead", "cardText"]);
+const IMAGE_KEYS = new Set(["image", "img", "cover"]);
+const LONG_KEYS = new Set(["titleHtml", "desc", "text", "quote", "a", "sub", "lead", "cardText", "bodyHtml"]);
 
 function isHex(v: string) {
   return /^#([0-9a-f]{3,8})$/i.test(v.trim());
@@ -35,6 +37,9 @@ function blankLike(template: unknown): unknown {
 export default function Field({ value, onChange, lang, keyName, ui }: Props) {
   // ── string ───────────────────────────────────────────────
   if (typeof value === "string") {
+    if (keyName && IMAGE_KEYS.has(keyName)) {
+      return <ImageField value={value} onChange={onChange} lang={lang} />;
+    }
     if ((keyName && COLOR_KEYS.has(keyName)) || isHex(value)) {
       return (
         <div className="cms-color">

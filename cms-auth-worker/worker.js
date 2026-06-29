@@ -194,6 +194,27 @@ export default {
       }
     }
 
-    return json({ name: "plaster-cms", endpoints: ["/api/login", "/api/me", "/api/logout", "/api/save"] }, env, request);
+    // POST /api/upload {filename, contentBase64}  → commit image to public/assets
+    if (path === "/api/upload" && request.method === "POST") {
+      if (!configured) return json({ error: "Worker not configured." }, env, request, { status: 500 });
+      const session = await verify(getCookie(request, COOKIE), env.SESSION_SECRET);
+      if (!session) return json({ error: "Nicht angemeldet." }, env, request, { status: 401 });
+      const body = await request.json().catch(() => ({}));
+      const raw = String(body.filename || "image");
+      const contentBase64 = body.contentBase64;
+      if (!contentBase64) return json({ error: "Keine Datei." }, env, request, { status: 400 });
+      const dot = raw.lastIndexOf(".");
+      const ext = dot >= 0 ? raw.slice(dot).toLowerCase().replace(/[^.a-z0-9]/g, "") : "";
+      const base = (dot >= 0 ? raw.slice(0, dot) : raw).replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60) || "bild";
+      const name = `${Date.now().toString(36)}-${base}${ext}`;
+      try {
+        await putFile(env, `public/assets/${name}`, contentBase64, `Bild hochgeladen: ${name}`);
+        return json({ ok: true, path: `assets/${name}` }, env, request);
+      } catch (e) {
+        return json({ error: String(e && e.message ? e.message : e) }, env, request, { status: 502 });
+      }
+    }
+
+    return json({ name: "plaster-cms", endpoints: ["/api/login", "/api/me", "/api/logout", "/api/save", "/api/upload"] }, env, request);
   },
 };

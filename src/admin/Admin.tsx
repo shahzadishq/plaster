@@ -213,8 +213,8 @@ export default function Admin() {
           {tab === "media" && (
             <div className="cms-soon">
               {lang === "de"
-                ? "Bilder: Pfad im Feld „Bildpfad“ eintragen (z. B. assets/mein-bild.webp) und die Datei in public/assets ablegen. Direkt-Upload folgt."
-                : "Images: enter the path in the image field (e.g. assets/my-image.webp) and place the file in public/assets. Direct upload coming next."}
+                ? "Bilder werden direkt an Ort und Stelle hochgeladen: Öffnen Sie eine Seite/Leistung/einen Beitrag und klicken Sie beim jeweiligen Bild auf „Bild hochladen“. Das Bild wird gespeichert und erscheint nach dem Veröffentlichen auf der Website."
+                : "Images upload right where you need them: open a page/service/post and use the “Upload image” button on any image field. The file is committed and appears on the site after publishing."}
             </div>
           )}
         </section>

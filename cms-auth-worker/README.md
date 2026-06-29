@@ -64,6 +64,7 @@ Optional plain-text variable on the worker: `ALLOWED_ORIGIN` — defaults to
 | `GET  /api/me`    | cookie      | `{ authenticated: boolean }`              |
 | `POST /api/logout`| —           | Clear the session cookie                  |
 | `POST /api/save`  | cookie      | Commit `{ files:[{path,content}] }` to GitHub |
+| `POST /api/upload`| cookie      | Commit an image `{ filename, contentBase64 }` to `public/assets`, returns its path |
 
 The cookie is `HttpOnly; Secure; SameSite=None` so the admin (a different origin)
 can use it via `fetch(..., { credentials: "include" })`.

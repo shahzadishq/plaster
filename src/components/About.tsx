@@ -4,7 +4,7 @@ import { asset } from "@/lib/asset";
 import { useContent } from "@/content/store";
 
 export default function About() {
-  const { settings, homepage } = useContent();
+  const { homepage } = useContent();
   const a = homepage.about;
   return (
     <section className="section" id="ueber-uns">
@@ -12,7 +12,7 @@ export default function About() {
         <Reveal variant="fadeRight">
           <span className="eyebrow">{a.eyebrow}</span>
           <h2 className="section-title" dangerouslySetInnerHTML={{ __html: a.titleHtml }} />
-          <p>{settings.about.text}</p>
+          <p>{a.text}</p>
           <ul className="feature-list">
             {a.features.map((f) => (
               <li key={f.strong}>

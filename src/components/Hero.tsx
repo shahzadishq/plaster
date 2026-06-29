@@ -12,7 +12,7 @@ const heroBg = {
 };
 
 export default function Hero() {
-  const { settings, homepage } = useContent();
+  const { homepage } = useContent();
   const h = homepage.hero;
   return (
     <section className="hero" style={heroBg}>
@@ -26,7 +26,7 @@ export default function Hero() {
         >
           <span className="hero__badge"><span className="dot" /> {h.badge}</span>
           <h1 dangerouslySetInnerHTML={{ __html: h.titleHtml }} />
-          <p className="hero__lead">{settings.hero.lead}</p>
+          <p className="hero__lead">{h.lead}</p>
           <div className="hero__actions">
             <a className="btn btn--light btn--lg" href="#kontakt">
               {h.ctaPrimary} <ArrowRight />

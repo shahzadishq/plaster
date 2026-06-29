@@ -13,8 +13,12 @@ import Contact from "./components/Contact";
 import Shell from "./components/Shell";
 import { useContent } from "./content/store";
 
-// Registry of toggleable / reorderable homepage sections (managed in the CMS).
+// Each homepage section carries its own id/name/visible (managed in the CMS,
+// inside Pages → Homepage). Render order is fixed here; visibility is per-section.
+const ORDER = ["hero", "about", "marquee", "stats", "services", "projects", "why", "testimonials", "faq", "cta", "contact"] as const;
+
 const REGISTRY: Record<string, ComponentType> = {
+  hero: Hero,
   about: About,
   marquee: Marquee,
   stats: Stats,
@@ -29,14 +33,14 @@ const REGISTRY: Record<string, ComponentType> = {
 
 export default function App() {
   const { homepage } = useContent();
-  const sections = homepage.sections.filter((s) => s.visible);
+  const hp = homepage as Record<string, { visible?: boolean }>;
 
   return (
     <Shell>
-      <Hero />
-      {sections.map((s) => {
-        const C = REGISTRY[s.id];
-        return C ? <C key={s.id} /> : null;
+      {ORDER.map((id) => {
+        const C = REGISTRY[id];
+        if (!C || hp[id]?.visible === false) return null;
+        return <C key={id} />;
       })}
     </Shell>
   );
