@@ -18,7 +18,7 @@ export default function Why() {
     <section className="section why why--brand" id="warum">
       <div className="container">
         <div className="why__layout">
-          <Reveal className="why__media">
+          <Reveal className="why__media" variant="fadeRight">
             <img
               src={asset("assets/469739262_122125029824401905_4926986459299821165_n.jpg")}
               alt="Mitarbeiter der Pläster Gebäudereinigung bei der professionellen Reinigung"
@@ -29,7 +29,7 @@ export default function Why() {
           </Reveal>
 
           <div className="why__content">
-            <Reveal className="section-head section-head--left">
+            <Reveal className="section-head section-head--left" variant="fadeLeft">
               <span className="eyebrow">Warum Pläster</span>
               <h2 className="section-title">Warum Pläster <em>Gebäudereinigung?</em></h2>
               <p className="section-sub">Vier gute Gründe, warum Kunden seit über 40 Jahren auf uns vertrauen.</p>

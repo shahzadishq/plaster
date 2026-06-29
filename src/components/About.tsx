@@ -13,7 +13,7 @@ export default function About() {
   return (
     <section className="section" id="ueber-uns">
       <div className="container split">
-        <Reveal>
+        <Reveal variant="fadeRight">
           <span className="eyebrow">Über uns</span>
           <h2 className="section-title">Ein Familienbetrieb mit <em>Tradition</em></h2>
           <p>{settings.about.text}</p>
@@ -30,7 +30,7 @@ export default function About() {
           </a>
         </Reveal>
 
-        <Reveal>
+        <Reveal variant="fadeLeft">
           <figure className="about-video">
             <video controls preload="none" playsInline poster={asset("assets/video-poster.webp")}>
               <source src={asset("assets/normal_669198d5de7f1.mp4")} type="video/mp4" />

@@ -31,7 +31,7 @@ export default function Contact() {
     <section className="section kontakt" id="kontakt">
       <CircleMarquee />
       <div className="container">
-        <Reveal className="section-head section-head--left">
+        <Reveal className="section-head section-head--left" variant="fadeRight">
           <span className="eyebrow">Kontakt</span>
           <h2 className="section-title">Fordern Sie Ihr <em>kostenloses Angebot</em> an</h2>
           <p className="section-sub">Schreiben Sie uns – wir melden uns in der Regel innerhalb eines Werktags.</p>

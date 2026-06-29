@@ -6,7 +6,7 @@ export default function Cta() {
   return (
     <section className="section section--alt">
       <div className="container">
-        <Reveal className="cta-band">
+        <Reveal className="cta-band" variant="zoomIn">
           <AnimatedDots />
           <div className="cta-band__inner">
             <span className="eyebrow" style={{ color: "#fff", justifyContent: "center" }}>Seit 1982</span>

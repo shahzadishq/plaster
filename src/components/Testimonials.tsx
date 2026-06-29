@@ -15,7 +15,7 @@ export default function Testimonials() {
   return (
     <section className="section testimonials" id="stimmen">
       <div className="container">
-        <Reveal className="section-head">
+        <Reveal className="section-head" variant="zoomIn">
           <span className="eyebrow">Kundenstimmen</span>
           <h2 className="section-title">Das sagen unsere <em>Kunden</em></h2>
           <p className="section-sub">Vertrauen, das über Jahre gewachsen ist.</p>

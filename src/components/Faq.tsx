@@ -25,7 +25,7 @@ export default function Faq() {
   return (
     <section className="section faq-section" id="faq">
       <div className="container faq-layout">
-        <Reveal className="faq-intro">
+        <Reveal className="faq-intro" variant="fadeRight">
           <span className="eyebrow">FAQ &amp; Support</span>
           <h2 className="section-title">Alles, was Sie<br /><em>wissen müssen</em></h2>
           <div className="faq-card">
@@ -45,7 +45,7 @@ export default function Faq() {
           </div>
         </Reveal>
 
-        <Reveal className="faq" amount={0.1}>
+        <Reveal className="faq" amount={0.1} variant="fadeLeft">
           {faqs.map((f, i) => (
             <FaqItem key={f.q} q={f.q} a={f.a} defaultOpen={i === 0} />
           ))}
