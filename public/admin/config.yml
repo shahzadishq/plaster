@@ -4,7 +4,7 @@ backend:
   branch: main
   # Password-login worker that releases the GitHub token after a correct password.
   # Deploy cms-auth-worker/ and paste its URL here (see cms-auth-worker/README.md).
-  base_url: https://REPLACE-WITH-YOUR-CMS-AUTH-WORKER
+  base_url: https://plaster-cms-auth.shahzadishaq.workers.dev
 
 # Uploaded images are committed here and referenced as assets/<file> in content.
 media_folder: "public/assets"
