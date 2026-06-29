@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { asset } from "@/lib/asset";
-import settings from "@/content/settings.json";
+import { useContent } from "@/content/store";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -11,14 +11,9 @@ const heroBg = {
     `url(${asset("assets/468340775_122129564642398209_5784847375390515268_n.jpg")}) center/cover no-repeat`,
 };
 
-const stats = [
-  { num: "40+", label: "Jahre Erfahrung" },
-  { num: "1982", label: "Gegründet" },
-  { num: "7+", label: "Leistungsbereiche" },
-  { num: "100%", label: "Zuverlässigkeit" },
-];
-
 export default function Hero() {
+  const { settings, homepage } = useContent();
+  const h = homepage.hero;
   return (
     <section className="hero" style={heroBg}>
       <span className="hero__glow" aria-hidden="true" />
@@ -29,14 +24,14 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: EASE }}
         >
-          <span className="hero__badge"><span className="dot" /> Familienbetrieb · Qualität seit 1982</span>
-          <h1>Professionelle <em>Gebäude&shy;reinigung</em> <span className="accent">seit 1982</span></h1>
+          <span className="hero__badge"><span className="dot" /> {h.badge}</span>
+          <h1 dangerouslySetInnerHTML={{ __html: h.titleHtml }} />
           <p className="hero__lead">{settings.hero.lead}</p>
           <div className="hero__actions">
             <a className="btn btn--light btn--lg" href="#kontakt">
-              Kostenloses Angebot <ArrowRight />
+              {h.ctaPrimary} <ArrowRight />
             </a>
-            <a className="btn btn--ghost btn--on-dark btn--lg" href="#leistungen">Unsere Leistungen</a>
+            <a className="btn btn--ghost btn--on-dark btn--lg" href="#leistungen">{h.ctaSecondary}</a>
           </div>
         </motion.div>
 
@@ -62,7 +57,7 @@ export default function Hero() {
         transition={{ duration: 0.6, delay: 0.35 }}
       >
         <div className="container hero__statbar-inner">
-          {stats.map((s) => (
+          {h.stats.map((s) => (
             <div className="hero__stat" key={s.label}>
               <b>{s.num}</b>
               <span>{s.label}</span>

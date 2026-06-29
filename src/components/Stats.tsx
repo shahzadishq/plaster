@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useInView, animate } from "framer-motion";
 import { Reveal, staggerContainer, staggerItem } from "./motion";
 import AnimatedDots from "./AnimatedDots";
+import { useContent } from "@/content/store";
 
 function Counter({ to }: { to: number }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -19,27 +20,17 @@ function Counter({ to }: { to: number }) {
   return <span ref={ref}>{val.toLocaleString("de-DE")}</span>;
 }
 
-type Stat = { to?: number; value?: string; suffix?: string; label: string; desc: string };
-
-const stats: Stat[] = [
-  { to: 40, suffix: "+", label: "Jahre Erfahrung", desc: "Seit 1982 im Einsatz" },
-  { value: "1982", label: "Gegründet", desc: "Inhabergeführt" },
-  { to: 100, suffix: "%", label: "Zuverlässigkeit", desc: "Termintreu & gründlich" },
-  { to: 9, suffix: "+", label: "Leistungsbereiche", desc: "Rund um die Reinigung" },
-];
-
 export default function Stats() {
+  const { homepage } = useContent();
+  const s = homepage.stats;
   return (
     <section className="section stats stats--brand" aria-label="Zahlen &amp; Fakten">
       <AnimatedDots />
       <div className="container">
         <Reveal className="section-head">
-          <span className="eyebrow">Seit 1982</span>
-          <h2 className="section-title">40+ Jahre Erfahrung &amp; <em>Qualität</em></h2>
-          <p className="section-sub">
-            Ein verlässlicher Partner für Unternehmen, Hausverwaltungen und Privatkunden – mit eigenem Fuhrpark
-            und geschultem Team.
-          </p>
+          <span className="eyebrow">{s.eyebrow}</span>
+          <h2 className="section-title" dangerouslySetInnerHTML={{ __html: s.titleHtml }} />
+          <p className="section-sub">{s.sub}</p>
         </Reveal>
 
         <motion.div
@@ -49,14 +40,14 @@ export default function Stats() {
           whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
         >
-          {stats.map((s) => (
-            <motion.div className="stat" key={s.label} variants={staggerItem}>
+          {s.items.map((it) => (
+            <motion.div className="stat" key={it.label} variants={staggerItem}>
               <div className="stat__num">
-                {s.value ? s.value : <Counter to={s.to!} />}
-                {s.suffix && <span className="stat__suffix">{s.suffix}</span>}
+                {it.value ? it.value : <Counter to={it.to ?? 0} />}
+                {it.suffix && <span className="stat__suffix">{it.suffix}</span>}
               </div>
-              <div className="stat__label">{s.label}</div>
-              <div className="stat__desc">{s.desc}</div>
+              <div className="stat__label">{it.label}</div>
+              <div className="stat__desc">{it.desc}</div>
             </motion.div>
           ))}
         </motion.div>

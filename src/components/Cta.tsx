@@ -1,21 +1,21 @@
 import { ArrowRight } from "lucide-react";
 import { Reveal } from "./motion";
 import AnimatedDots from "./AnimatedDots";
+import { useContent } from "@/content/store";
 
 export default function Cta() {
+  const { homepage } = useContent();
+  const c = homepage.cta;
   return (
     <section className="section section--alt">
       <div className="container">
         <Reveal className="cta-band" variant="zoomIn">
           <AnimatedDots />
           <div className="cta-band__inner">
-            <span className="eyebrow" style={{ color: "#fff", justifyContent: "center" }}>Seit 1982</span>
-            <h2>40+ Jahre Sauberkeit mit <em>Vertrauen</em></h2>
-            <p>
-              Lassen Sie uns über Ihr Gebäude sprechen. Wir erstellen Ihnen ein unverbindliches Angebot –
-              individuell und kostenlos.
-            </p>
-            <a className="btn btn--light btn--lg" href="#kontakt">Jetzt Angebot anfordern <ArrowRight /></a>
+            <span className="eyebrow" style={{ color: "#fff", justifyContent: "center" }}>{c.eyebrow}</span>
+            <h2 dangerouslySetInnerHTML={{ __html: c.titleHtml }} />
+            <p>{c.text}</p>
+            <a className="btn btn--light btn--lg" href="#kontakt">{c.button} <ArrowRight /></a>
           </div>
         </Reveal>
       </div>

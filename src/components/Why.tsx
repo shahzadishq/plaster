@@ -3,25 +3,21 @@ import { Award, Users, Leaf, Truck } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Reveal, staggerContainer, staggerItem } from "./motion";
 import { asset } from "@/lib/asset";
+import { useContent } from "@/content/store";
 
-type Item = { icon: LucideIcon; title: string; desc: string };
-
-const items: Item[] = [
-  { icon: Award, title: "Erfahrung seit 1982", desc: "Über 40 Jahre Praxis – wir kennen jedes Objekt und jede Herausforderung." },
-  { icon: Users, title: "Geschultes Personal", desc: "Festangestellte, regelmäßig geschulte Fachkräfte – zuverlässig und sorgfältig." },
-  { icon: Leaf, title: "Umweltbewusst", desc: "Schonende Reinigungsmittel und ressourcensparende Verfahren für Mensch & Umwelt." },
-  { icon: Truck, title: "Eigener Fuhrpark", desc: "Pünktlich vor Ort mit eigener Flotte – flexibel und termintreu in der ganzen Region." },
-];
+const ICONS: Record<string, LucideIcon> = { award: Award, users: Users, leaf: Leaf, truck: Truck };
 
 export default function Why() {
+  const { homepage } = useContent();
+  const w = homepage.why;
   return (
     <section className="section why why--brand" id="warum">
       <div className="container">
         <div className="why__layout">
           <Reveal className="why__media" variant="fadeRight">
             <img
-              src={asset("assets/469739262_122125029824401905_4926986459299821165_n.jpg")}
-              alt="Mitarbeiter der Pläster Gebäudereinigung bei der professionellen Reinigung"
+              src={asset(w.image)}
+              alt={w.imageAlt}
               loading="lazy"
               width={900}
               height={1100}
@@ -30,9 +26,9 @@ export default function Why() {
 
           <div className="why__content">
             <Reveal className="section-head section-head--left" variant="fadeLeft">
-              <span className="eyebrow">Warum Pläster</span>
-              <h2 className="section-title">Warum Pläster <em>Gebäudereinigung?</em></h2>
-              <p className="section-sub">Vier gute Gründe, warum Kunden seit über 40 Jahren auf uns vertrauen.</p>
+              <span className="eyebrow">{w.eyebrow}</span>
+              <h2 className="section-title" dangerouslySetInnerHTML={{ __html: w.titleHtml }} />
+              <p className="section-sub">{w.sub}</p>
             </Reveal>
 
             <motion.div
@@ -42,8 +38,8 @@ export default function Why() {
               whileInView="show"
               viewport={{ once: true, amount: 0.2 }}
             >
-              {items.map((it) => {
-                const Icon = it.icon;
+              {w.items.map((it) => {
+                const Icon = ICONS[it.icon] ?? Award;
                 return (
                   <motion.div className="why__item" key={it.title} variants={staggerItem}>
                     <div className="why__icon"><Icon /></div>

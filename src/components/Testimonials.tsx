@@ -2,23 +2,18 @@ import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import { Reveal, staggerContainer, staggerItem } from "./motion";
 import TiltCard from "./TiltCard";
-
-type T = { quote: string; name: string; role: string; initials: string };
-
-const items: T[] = [
-  { quote: "Seit Jahren reinigt Pläster unsere Bürogebäude – immer zuverlässig, gründlich und absolut vertrauenswürdig. Ein Partner, auf den wir uns blind verlassen können.", name: "Michael Bauer", role: "Geschäftsführer", initials: "MB" },
-  { quote: "Die Treppenhausreinigung in unseren Wohnanlagen läuft seit Jahren reibungslos. Pünktlich, sauber und immer freundlich – genau so soll es sein.", name: "Sabine Keller", role: "Hausverwalterin", initials: "SK" },
-  { quote: "Hygiene hat in unserer Praxis höchste Priorität. Auf Pläster ist absolut Verlass – gründlich, diskret und mit einem Auge fürs Detail.", name: "Dr. Thomas Wolf", role: "Praxisinhaber", initials: "TW" },
-];
+import { useContent } from "@/content/store";
 
 export default function Testimonials() {
+  const { homepage } = useContent();
+  const t = homepage.testimonials;
   return (
     <section className="section testimonials" id="stimmen">
       <div className="container">
         <Reveal className="section-head" variant="zoomIn">
-          <span className="eyebrow">Kundenstimmen</span>
-          <h2 className="section-title">Das sagen unsere <em>Kunden</em></h2>
-          <p className="section-sub">Vertrauen, das über Jahre gewachsen ist.</p>
+          <span className="eyebrow">{t.eyebrow}</span>
+          <h2 className="section-title" dangerouslySetInnerHTML={{ __html: t.titleHtml }} />
+          <p className="section-sub">{t.sub}</p>
         </Reveal>
 
         <motion.div
@@ -28,19 +23,19 @@ export default function Testimonials() {
           whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
         >
-          {items.map((t) => (
-            <TiltCard className="testimonial" key={t.name} variants={staggerItem} max={6}>
+          {t.items.map((item) => (
+            <TiltCard className="testimonial" key={item.name} variants={staggerItem} max={6}>
               <div className="testimonial__stars" aria-label="5 von 5 Sternen">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star key={i} fill="currentColor" strokeWidth={0} />
                 ))}
               </div>
-              <p className="testimonial__quote">{t.quote}</p>
+              <p className="testimonial__quote">{item.quote}</p>
               <div className="testimonial__author">
-                <span className="testimonial__avatar" aria-hidden="true">{t.initials}</span>
+                <span className="testimonial__avatar" aria-hidden="true">{item.initials}</span>
                 <div>
-                  <div className="testimonial__name">{t.name}</div>
-                  <div className="testimonial__role">{t.role}</div>
+                  <div className="testimonial__name">{item.name}</div>
+                  <div className="testimonial__role">{item.role}</div>
                 </div>
               </div>
             </TiltCard>

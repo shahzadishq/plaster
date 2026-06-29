@@ -14,7 +14,7 @@ import Faq from "./components/Faq";
 import Cta from "./components/Cta";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
-import sectionsData from "./content/sections.json";
+import { useContent } from "./content/store";
 
 // Registry of toggleable / reorderable sections (managed in the CMS).
 const REGISTRY: Record<string, ComponentType> = {
@@ -32,6 +32,7 @@ const REGISTRY: Record<string, ComponentType> = {
 
 export default function App() {
   const { scrollYProgress } = useScroll();
+  const { sections: sectionsData } = useContent();
   const sections = sectionsData.items.filter((s) => s.visible);
 
   return (

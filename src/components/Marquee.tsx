@@ -1,19 +1,10 @@
 import { motion, useReducedMotion } from "framer-motion";
-
-const items = [
-  "Unterhaltsreinigung",
-  "Glas- & Fassadenreinigung",
-  "Photovoltaik-Reinigung",
-  "Bauschlussreinigung",
-  "Reinraumreinigung",
-  "Tatortreinigung",
-  "Gerätevermietung",
-  "Seit 1982",
-];
+import { useContent } from "@/content/store";
 
 export default function Marquee() {
   const reduce = useReducedMotion();
-  const loop = [...items, ...items];
+  const { homepage } = useContent();
+  const loop = [...homepage.marquee.items, ...homepage.marquee.items];
   return (
     <div className="marquee" aria-hidden="true">
       <motion.div

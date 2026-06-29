@@ -6,18 +6,17 @@ import type { LucideIcon } from "lucide-react";
 import { Reveal, staggerContainer, staggerItem } from "./motion";
 import TiltCard from "./TiltCard";
 import { asset } from "@/lib/asset";
-import servicesData from "@/content/services.json";
+import { useContent } from "@/content/store";
 
 const ICONS: Record<string, LucideIcon> = {
   building: Building2, window: PanelTop, hardhat: HardHat, sun: Sun,
   shield: ShieldCheck, alert: ShieldAlert, wrench: Wrench,
 };
 
-type Service = { icon: string; image: string; title: string; alt?: string; desc: string };
-
-const services: Service[] = servicesData.items;
-
 export default function Services() {
+  const { homepage, services: servicesData } = useContent();
+  const head = homepage.services;
+  const services = servicesData.items;
   return (
     <section className="section svc" id="leistungen">
       <div className="svc-bubbles" aria-hidden="true">
@@ -25,12 +24,9 @@ export default function Services() {
       </div>
       <div className="container">
         <Reveal className="section-head">
-          <span className="eyebrow">Leistungen</span>
-          <h2 className="section-title">Saubere Lösungen für <em>jedes Gebäude</em></h2>
-          <p className="section-sub">
-            Von der regelmäßigen Unterhaltsreinigung bis zur Spezialreinigung – ein Ansprechpartner für alle
-            Reinigungsaufgaben.
-          </p>
+          <span className="eyebrow">{head.eyebrow}</span>
+          <h2 className="section-title" dangerouslySetInnerHTML={{ __html: head.titleHtml }} />
+          <p className="section-sub">{head.sub}</p>
         </Reveal>
 
         <motion.div

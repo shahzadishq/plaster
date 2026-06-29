@@ -2,11 +2,12 @@ import { useState } from "react";
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 import { Reveal } from "./motion";
 import CircleMarquee from "./CircleMarquee";
-import settings from "@/content/settings.json";
-
-const c = settings.contact;
+import { useContent } from "@/content/store";
 
 export default function Contact() {
+  const { settings, homepage } = useContent();
+  const c = settings.contact;
+  const k = homepage.contact;
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
 
@@ -32,9 +33,9 @@ export default function Contact() {
       <CircleMarquee />
       <div className="container">
         <Reveal className="section-head section-head--left" variant="fadeRight">
-          <span className="eyebrow">Kontakt</span>
-          <h2 className="section-title">Fordern Sie Ihr <em>kostenloses Angebot</em> an</h2>
-          <p className="section-sub">Schreiben Sie uns – wir melden uns in der Regel innerhalb eines Werktags.</p>
+          <span className="eyebrow">{k.eyebrow}</span>
+          <h2 className="section-title" dangerouslySetInnerHTML={{ __html: k.titleHtml }} />
+          <p className="section-sub">{k.sub}</p>
         </Reveal>
 
         <div className="contact__grid">
@@ -84,14 +85,9 @@ export default function Contact() {
               <label htmlFor="service">Gewünschte Leistung</label>
               <select id="service" name="service" defaultValue="">
                 <option value="">Bitte wählen …</option>
-                <option>Unterhaltsreinigung</option>
-                <option>Glas- &amp; Fassadenreinigung</option>
-                <option>Bauschlussreinigung</option>
-                <option>Photovoltaik-Reinigung</option>
-                <option>Reinraumreinigung</option>
-                <option>Tatortreinigung</option>
-                <option>Gerätevermietung</option>
-                <option>Sonstiges</option>
+                {k.services.map((s) => (
+                  <option key={s}>{s}</option>
+                ))}
               </select>
             </div>
             <div className="field">

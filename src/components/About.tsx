@@ -1,32 +1,28 @@
 import { Check, ArrowRight } from "lucide-react";
 import { Reveal } from "./motion";
 import { asset } from "@/lib/asset";
-import settings from "@/content/settings.json";
-
-const features: [string, string][] = [
-  ["Persönlich & regional:", "fester Ansprechpartner für jedes Objekt – kurze Wege, schnelle Reaktion."],
-  ["Geschultes Personal:", "regelmäßig weitergebildete Fachkräfte mit professioneller Ausrüstung."],
-  ["Umweltschonend:", "Einsatz nachhaltiger Reinigungsmittel (Buzil Planta) und ressourcenbewusster Verfahren."],
-];
+import { useContent } from "@/content/store";
 
 export default function About() {
+  const { settings, homepage } = useContent();
+  const a = homepage.about;
   return (
     <section className="section" id="ueber-uns">
       <div className="container split">
         <Reveal variant="fadeRight">
-          <span className="eyebrow">Über uns</span>
-          <h2 className="section-title">Ein Familienbetrieb mit <em>Tradition</em></h2>
+          <span className="eyebrow">{a.eyebrow}</span>
+          <h2 className="section-title" dangerouslySetInnerHTML={{ __html: a.titleHtml }} />
           <p>{settings.about.text}</p>
           <ul className="feature-list">
-            {features.map(([b, t]) => (
-              <li key={b}>
+            {a.features.map((f) => (
+              <li key={f.strong}>
                 <span className="tick"><Check strokeWidth={2.5} /></span>
-                <span><strong>{b}</strong> {t}</span>
+                <span><strong>{f.strong}</strong> {f.text}</span>
               </li>
             ))}
           </ul>
           <a className="btn btn--primary" href="#kontakt" style={{ marginTop: "var(--sp-3)" }}>
-            Lernen Sie uns kennen <ArrowRight />
+            {a.cta} <ArrowRight />
           </a>
         </Reveal>
 
