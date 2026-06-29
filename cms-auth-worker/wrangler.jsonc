@@ -1,0 +1,10 @@
+{
+  // Standalone CMS password-auth worker — deploy SEPARATELY from the website.
+  // Deploy from this folder:  npx wrangler deploy
+  // Then set the two secrets (see README.md):
+  //   npx wrangler secret put CMS_PASSWORD
+  //   npx wrangler secret put GITHUB_TOKEN
+  "name": "plaster-cms-auth",
+  "main": "worker.js",
+  "compatibility_date": "2025-06-01"
+}

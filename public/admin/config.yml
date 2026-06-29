@@ -2,16 +2,16 @@ backend:
   name: github
   repo: shahzadishq/plaster
   branch: main
-  # OAuth provider that performs the GitHub login handshake for the admin.
-  # Replace with your deployed OAuth proxy URL (see README "CMS / Admin setup").
-  base_url: https://REPLACE-WITH-YOUR-OAUTH-PROXY
+  # Password-login worker that releases the GitHub token after a correct password.
+  # Deploy cms-auth-worker/ and paste its URL here (see cms-auth-worker/README.md).
+  base_url: https://REPLACE-WITH-YOUR-CMS-AUTH-WORKER
 
 # Uploaded images are committed here and referenced as assets/<file> in content.
 media_folder: "public/assets"
 public_folder: "assets"
 
-site_url: https://shahzadishq.github.io/plaster/
-display_url: https://shahzadishq.github.io/plaster/
+site_url: https://plaster.shahzadishaq.workers.dev/
+display_url: https://plaster.shahzadishaq.workers.dev/
 locale: "de"
 
 collections:

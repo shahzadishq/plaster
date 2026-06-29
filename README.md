@@ -76,25 +76,23 @@ links, and the contact form endpoint (currently a simulated submit in
 
 ## CMS / Admin (Decap CMS)
 
-Content is editable via a WordPress-like admin at **`/plaster/admin/`**. It edits
-JSON in `src/content/` and commits to GitHub; the deploy workflow rebuilds and
-publishes (changes go live ~1 min after saving).
+Content is editable via a WordPress-like admin at **`/admin/`**. It edits JSON in
+`src/content/` and commits to GitHub; Cloudflare rebuilds and publishes (changes
+go live shortly after saving).
 
 Editable in v1: **brand colors**, **contact details**, **hero & about text**,
 **FAQs** (add/remove/reorder), **services** (text + image + icon), and
 **section show/hide + reorder** (`src/content/sections.json`).
 
-### One-time login setup (required)
-Decap needs a GitHub OAuth handshake (static sites can't do this alone):
-1. **GitHub OAuth App** — GitHub → Settings → Developer settings → OAuth Apps →
-   New. Homepage: `https://shahzadishq.github.io/plaster/`. Authorization
-   callback URL: your proxy's callback (see step 2). Note the Client ID/Secret.
-2. **OAuth proxy** — deploy a small Decap OAuth provider (e.g. the Cloudflare
-   Worker `decap-proxy`, or `netlify-cms-github-oauth-provider` on any host).
-   Set it with the Client ID/Secret from step 1.
-3. In `public/admin/config.yml` set `backend.base_url` to your proxy URL.
-4. Visit `/plaster/admin/`, click **Login with GitHub**. Only repo collaborators
-   can save.
+### One-time login setup (password — no GitHub account needed)
+Login uses a small Cloudflare Worker so you sign in with **your own password**
+instead of a GitHub account. Full steps are in
+[`cms-auth-worker/README.md`](cms-auth-worker/README.md). In short:
+1. Deploy the worker in `cms-auth-worker/` (dashboard paste or `npx wrangler deploy`).
+2. Set two Worker secrets: `CMS_PASSWORD` (your password) and `GITHUB_TOKEN`
+   (a fine-grained PAT for `shahzadishq/plaster` with Contents read/write).
+3. In `public/admin/config.yml` set `backend.base_url` to the worker URL.
+4. Visit `/admin/`, click **Login**, enter your password.
 
-> Local editing without a proxy: set `local_backend: true` in config.yml and run
-> `npx decap-server` alongside `npm run dev`.
+> Local editing without the worker: set `local_backend: true` in config.yml and
+> run `npx decap-server` alongside `npm run dev`.
