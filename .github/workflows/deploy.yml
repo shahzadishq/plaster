@@ -1,8 +1,8 @@
 name: Deploy to GitHub Pages
 
+# Paused: the site now deploys via Cloudflare Workers. Run manually if needed.
+# (Note: GitHub Pages needs Vite base "/plaster/"; current base is "/" for Cloudflare.)
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:

@@ -1,0 +1,10 @@
+{
+  // Cloudflare Workers — serve the built SPA as Static Assets.
+  // Build: npm run build  →  Deploy: npx wrangler deploy
+  "name": "plaster",
+  "compatibility_date": "2025-06-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  }
+}
