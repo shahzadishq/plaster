@@ -5,9 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex" />
     <title>Pläster · Inhalte verwalten</title>
+    <link rel="icon" href="/assets/favicon.svg" />
+    <style>
+      :root { --plaster-brand: #019aea; --plaster-navy: #05397e; }
+      /* Brand the login screen background (Decap renders it full-screen). */
+      [class*="AuthenticationPage"] {
+        background: linear-gradient(135deg, var(--plaster-navy), var(--plaster-brand)) !important;
+      }
+      /* Brand the login button. */
+      [class*="AuthenticationPage"] button {
+        background-color: var(--plaster-brand) !important;
+        border-radius: 10px !important;
+      }
+      [class*="AuthenticationPage"] button:hover { background-color: var(--plaster-navy) !important; }
+    </style>
   </head>
   <body>
     <!-- Decap CMS (the maintained successor to Netlify CMS) -->
     <script src="https://unpkg.com/decap-cms@^3.3.3/dist/decap-cms.js"></script>
+    <script>
+      // The GitHub backend renders a "Login with GitHub" button. We log in with a
+      // password (via the auth worker), so relabel it to plain "Anmelden" and drop
+      // the GitHub wording/icon. Re-applied on re-render via a MutationObserver.
+      (function () {
+        function relabel() {
+          var buttons = document.querySelectorAll("button");
+          for (var i = 0; i < buttons.length; i++) {
+            var b = buttons[i];
+            var text = (b.textContent || "").trim();
+            if (/github/i.test(text)) {
+              if (b.textContent !== "Anmelden") b.textContent = "Anmelden";
+            }
+          }
+        }
+        try {
+          new MutationObserver(relabel).observe(document.documentElement, {
+            childList: true,
+            subtree: true,
+          });
+        } catch (e) {}
+        document.addEventListener("DOMContentLoaded", relabel);
+        // Safety net in case the button mounts without a mutation we catch.
+        var ticks = 0;
+        var t = setInterval(function () {
+          relabel();
+          if (++ticks > 40) clearInterval(t);
+        }, 300);
+      })();
+    </script>
   </body>
 </html>
