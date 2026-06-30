@@ -9,24 +9,45 @@
     "ctaPrimary": "Kostenloses Angebot",
     "ctaSecondary": "Unsere Leistungen",
     "stats": [
-      { "num": "40+", "label": "Jahre Erfahrung" },
-      { "num": "1982", "label": "Gegründet" },
-      { "num": "7+", "label": "Leistungsbereiche" },
-      { "num": "100%", "label": "Zuverlässigkeit" }
+      {
+        "num": "40+",
+        "label": "Jahre Erfahrung"
+      },
+      {
+        "num": "1982",
+        "label": "Gegründet"
+      },
+      {
+        "num": "7+",
+        "label": "Leistungsbereiche"
+      },
+      {
+        "num": "100%",
+        "label": "Zuverlässigkeit"
+      }
     ]
   },
   "about": {
     "id": "about",
-    "name": "Über uns",
+    "name": "Über un",
     "visible": true,
     "eyebrow": "Über uns",
     "titleHtml": "Ein Familienbetrieb mit <em>Tradition</em>",
     "text": "Seit 1982 steht der Name Pläster für gründliche, verlässliche Gebäudereinigung. Aus einem kleinen Familienbetrieb ist ein eingespieltes Team mit eigenem Fuhrpark und modernem Equipment geworden – Ihr vertrauensvoller Partner für Gewerbe, Hausverwaltungen und Privatkunden in Emmendingen und Umgebung.",
     "cta": "Lernen Sie uns kennen",
     "features": [
-      { "strong": "Persönlich & regional:", "text": "fester Ansprechpartner für jedes Objekt – kurze Wege, schnelle Reaktion." },
-      { "strong": "Geschultes Personal:", "text": "regelmäßig weitergebildete Fachkräfte mit professioneller Ausrüstung." },
-      { "strong": "Umweltschonend:", "text": "Einsatz nachhaltiger Reinigungsmittel (Buzil Planta) und ressourcenbewusster Verfahren." }
+      {
+        "strong": "Persönlich & regional:",
+        "text": "fester Ansprechpartner für jedes Objekt – kurze Wege, schnelle Reaktion."
+      },
+      {
+        "strong": "Geschultes Personal:",
+        "text": "regelmäßig weitergebildete Fachkräfte mit professioneller Ausrüstung."
+      },
+      {
+        "strong": "Umweltschonend:",
+        "text": "Einsatz nachhaltiger Reinigungsmittel (Buzil Planta) und ressourcenbewusster Verfahren."
+      }
     ]
   },
   "marquee": {
@@ -52,10 +73,34 @@
     "titleHtml": "40+ Jahre Erfahrung & <em>Qualität</em>",
     "sub": "Ein verlässlicher Partner für Unternehmen, Hausverwaltungen und Privatkunden – mit eigenem Fuhrpark und geschultem Team.",
     "items": [
-      { "value": "", "to": 40, "suffix": "+", "label": "Jahre Erfahrung", "desc": "Seit 1982 im Einsatz" },
-      { "value": "1982", "to": 0, "suffix": "", "label": "Gegründet", "desc": "Inhabergeführt" },
-      { "value": "", "to": 100, "suffix": "%", "label": "Zuverlässigkeit", "desc": "Termintreu & gründlich" },
-      { "value": "", "to": 9, "suffix": "+", "label": "Leistungsbereiche", "desc": "Rund um die Reinigung" }
+      {
+        "value": "",
+        "to": 40,
+        "suffix": "+",
+        "label": "Jahre Erfahrung",
+        "desc": "Seit 1982 im Einsatz"
+      },
+      {
+        "value": "1982",
+        "to": 0,
+        "suffix": "",
+        "label": "Gegründet",
+        "desc": "Inhabergeführt"
+      },
+      {
+        "value": "",
+        "to": 100,
+        "suffix": "%",
+        "label": "Zuverlässigkeit",
+        "desc": "Termintreu & gründlich"
+      },
+      {
+        "value": "",
+        "to": 9,
+        "suffix": "+",
+        "label": "Leistungsbereiche",
+        "desc": "Rund um die Reinigung"
+      }
     ]
   },
   "services": {
@@ -74,12 +119,48 @@
     "titleHtml": "Projekte, die für sich <em>sprechen</em>",
     "sub": "Ein Auszug aus unserer täglichen Arbeit – vom Bürogebäude bis zur Photovoltaikanlage.",
     "items": [
-      { "img": "assets/video-poster.webp", "tag": "Glas- & Fassadenreinigung", "title": "Fassadenreinigung in der Höhe", "sub": "Bürogebäude · Gewerbe", "alt": "Fassadenreinigung in der Höhe mit Hebebühne" },
-      { "img": "assets/469159898_122124697940401905_6463789775555365842_n.jpg", "tag": "Grund- & Bodenreinigung", "title": "Bodenreinigung Gewerbe", "sub": "Außenanlagen · Innenbereich", "alt": "Maschinelle Bodenreinigung in Gewerberäumen" },
-      { "img": "assets/469649322_122125024898401905_7948855457755618054_n.jpg", "tag": "Unterhaltsreinigung", "title": "Sanitär & Hygiene", "sub": "Praxis · Verwaltung", "alt": "Sanitär- und Hygienereinigung" },
-      { "img": "assets/Photovoltaik%20-%20Reinigung.webp", "tag": "Photovoltaik-Reinigung", "title": "Photovoltaikanlage", "sub": "Mehr Ertrag · materialschonend", "alt": "Gereinigte Photovoltaikanlage" },
-      { "img": "assets/469479909_122124989606401905_1792001857027702583_n.jpg", "tag": "Unser Team", "title": "Eingespielt & zuverlässig", "sub": "Geschultes Fachpersonal", "alt": "Das Team der Pläster Gebäudereinigung" },
-      { "img": "assets/468221710_122123566232401905_8775708943227813901_n.jpg", "tag": "Fuhrpark", "title": "Immer einsatzbereit", "sub": "Eigene Flotte · regional", "alt": "Servicefahrzeug der Pläster Gebäudereinigung" }
+      {
+        "img": "assets/video-poster.webp",
+        "tag": "Glas- & Fassadenreinigung",
+        "title": "Fassadenreinigung in der Höhe",
+        "sub": "Bürogebäude · Gewerbe",
+        "alt": "Fassadenreinigung in der Höhe mit Hebebühne"
+      },
+      {
+        "img": "assets/469159898_122124697940401905_6463789775555365842_n.jpg",
+        "tag": "Grund- & Bodenreinigung",
+        "title": "Bodenreinigung Gewerbe",
+        "sub": "Außenanlagen · Innenbereich",
+        "alt": "Maschinelle Bodenreinigung in Gewerberäumen"
+      },
+      {
+        "img": "assets/469649322_122125024898401905_7948855457755618054_n.jpg",
+        "tag": "Unterhaltsreinigung",
+        "title": "Sanitär & joo",
+        "sub": "Praxis · Verwaltung",
+        "alt": "Sanitär- und Hygienereinigung"
+      },
+      {
+        "img": "assets/Photovoltaik%20-%20Reinigung.webp",
+        "tag": "Photovoltaik-Reinigung",
+        "title": "Photovoltaikanlage",
+        "sub": "Mehr Ertrag · materialschonend",
+        "alt": "Gereinigte Photovoltaikanlage"
+      },
+      {
+        "img": "assets/469479909_122124989606401905_1792001857027702583_n.jpg",
+        "tag": "Unser Team",
+        "title": "Eingespielt & zuverlässig",
+        "sub": "Geschultes Fachpersonal",
+        "alt": "Das Team der Pläster Gebäudereinigung"
+      },
+      {
+        "img": "assets/468221710_122123566232401905_8775708943227813901_n.jpg",
+        "tag": "Fuhrpark",
+        "title": "Immer einsatzbereit",
+        "sub": "Eigene Flotte · regional",
+        "alt": "Servicefahrzeug der Pläster Gebäudereinigung"
+      }
     ]
   },
   "why": {
@@ -92,10 +173,26 @@
     "image": "assets/469739262_122125029824401905_4926986459299821165_n.jpg",
     "imageAlt": "Mitarbeiter der Pläster Gebäudereinigung bei der professionellen Reinigung",
     "items": [
-      { "icon": "award", "title": "Erfahrung seit 1982", "desc": "Über 40 Jahre Praxis – wir kennen jedes Objekt und jede Herausforderung." },
-      { "icon": "users", "title": "Geschultes Personal", "desc": "Festangestellte, regelmäßig geschulte Fachkräfte – zuverlässig und sorgfältig." },
-      { "icon": "leaf", "title": "Umweltbewusst", "desc": "Schonende Reinigungsmittel und ressourcensparende Verfahren für Mensch & Umwelt." },
-      { "icon": "truck", "title": "Eigener Fuhrpark", "desc": "Pünktlich vor Ort mit eigener Flotte – flexibel und termintreu in der ganzen Region." }
+      {
+        "icon": "award",
+        "title": "Erfahrung seit 1982",
+        "desc": "Über 40 Jahre Praxis – wir kennen jedes Objekt und jede Herausforderung."
+      },
+      {
+        "icon": "users",
+        "title": "Geschultes Personal",
+        "desc": "Festangestellte, regelmäßig geschulte Fachkräfte – zuverlässig und sorgfältig."
+      },
+      {
+        "icon": "leaf",
+        "title": "Umweltbewusst",
+        "desc": "Schonende Reinigungsmittel und ressourcensparende Verfahren für Mensch & Umwelt."
+      },
+      {
+        "icon": "truck",
+        "title": "Eigener Fuhrpark",
+        "desc": "Pünktlich vor Ort mit eigener Flotte – flexibel und termintreu in der ganzen Region."
+      }
     ]
   },
   "testimonials": {
@@ -106,9 +203,24 @@
     "titleHtml": "Das sagen unsere <em>Kunden</em>",
     "sub": "Vertrauen, das über Jahre gewachsen ist.",
     "items": [
-      { "quote": "Seit Jahren reinigt Pläster unsere Bürogebäude – immer zuverlässig, gründlich und absolut vertrauenswürdig. Ein Partner, auf den wir uns blind verlassen können.", "name": "Michael Bauer", "role": "Geschäftsführer", "initials": "MB" },
-      { "quote": "Die Treppenhausreinigung in unseren Wohnanlagen läuft seit Jahren reibungslos. Pünktlich, sauber und immer freundlich – genau so soll es sein.", "name": "Sabine Keller", "role": "Hausverwalterin", "initials": "SK" },
-      { "quote": "Hygiene hat in unserer Praxis höchste Priorität. Auf Pläster ist absolut Verlass – gründlich, diskret und mit einem Auge fürs Detail.", "name": "Dr. Thomas Wolf", "role": "Praxisinhaber", "initials": "TW" }
+      {
+        "quote": "Seit Jahren reinigt Pläster unsere Bürogebäude – immer zuverlässig, gründlich und absolut vertrauenswürdig. Ein Partner, auf den wir uns blind verlassen können.",
+        "name": "Michael Bauer",
+        "role": "Geschäftsführer",
+        "initials": "MB"
+      },
+      {
+        "quote": "Die Treppenhausreinigung in unseren Wohnanlagen läuft seit Jahren reibungslos. Pünktlich, sauber und immer freundlich – genau so soll es sein.",
+        "name": "Sabine Keller",
+        "role": "Hausverwalterin",
+        "initials": "SK"
+      },
+      {
+        "quote": "Hygiene hat in unserer Praxis höchste Priorität. Auf Pläster ist absolut Verlass – gründlich, diskret und mit einem Auge fürs Detail.",
+        "name": "Dr. Thomas Wolf",
+        "role": "Praxisinhaber",
+        "initials": "TW"
+      }
     ]
   },
   "faq": {
