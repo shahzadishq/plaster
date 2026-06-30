@@ -3,7 +3,7 @@ import Hero from "./components/Hero";
 import Marquee from "./components/Marquee";
 import About from "./components/About";
 import Stats from "./components/Stats";
-import Services from "./components/Services";
+import Services from "./components/ServicesShowcase";
 import Projects from "./components/Projects";
 import Why from "./components/Why";
 import Testimonials from "./components/Testimonials";
