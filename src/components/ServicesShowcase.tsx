@@ -14,7 +14,6 @@ const ICONS: Record<string, LucideIcon> = {
   shield: ShieldCheck, alert: ShieldAlert, wrench: Wrench,
 };
 const EASE = [0.16, 1, 0.3, 1] as const;
-const pad = (n: number) => String(n).padStart(2, "0");
 
 function useCompact() {
   const [compact, setCompact] = useState(false);
@@ -39,19 +38,20 @@ export default function ServicesShowcase() {
 
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
-  const [index, setIndex] = useState(0);
+  const [step, setStep] = useState(0); // 0 = intro, 1..N = service (N services)
   const n = services.length;
+  const steps = n + 1; // intro + one per service
 
   useMotionValueEvent(scrollYProgress, "change", (p) => {
     if (!n) return;
-    setIndex(Math.min(n - 1, Math.max(0, Math.floor(p * n))));
+    setStep(Math.min(steps - 1, Math.max(0, Math.floor(p * steps))));
   });
 
-  function goTo(i: number) {
+  function goToService(i: number) {
     const el = ref.current;
-    if (!el || n < 2) return;
-    const travel = el.offsetHeight - window.innerHeight; // sticky scroll distance
-    const target = el.offsetTop + ((i + 0.5) / n) * travel;
+    if (!el) return;
+    const travel = el.offsetHeight - window.innerHeight;
+    const target = el.offsetTop + ((i + 1 + 0.5) / steps) * travel; // service i -> step i+1
     window.scrollTo({ top: target, behavior: "smooth" });
   }
 
@@ -87,68 +87,77 @@ export default function ServicesShowcase() {
     );
   }
 
+  const introActive = step === 0;
+
   return (
-    <section className="svc-show" id="leistungen" ref={ref} style={{ height: `${n * 100}vh` }}>
+    <section className="svc-show" id="leistungen" ref={ref} style={{ height: `${steps * 100}vh` }}>
       <div className="svc-show__sticky">
         <span className="svc-show__bg" aria-hidden="true" />
-        <span className="svc-show__ghost" aria-hidden="true">{pad(index + 1)}</span>
 
         <div className="container svc-show__inner">
-          <header className="svc-show__head">
-            <span className="eyebrow eyebrow--light">{head.eyebrow}</span>
-            <h2 className="svc-show__title" dangerouslySetInnerHTML={{ __html: head.titleHtml }} />
-          </header>
+          {/* Slide 0 — centered intro */}
+          <motion.div
+            className="svc-intro"
+            aria-hidden={!introActive}
+            initial={false}
+            animate={{ opacity: introActive ? 1 : 0, y: introActive ? 0 : -40 }}
+            transition={{ duration: 0.55, ease: EASE }}
+            style={{ pointerEvents: introActive ? "auto" : "none" }}
+          >
+            <span className="eyebrow eyebrow--light eyebrow--center">{head.eyebrow}</span>
+            <h2 className="svc-intro__title" dangerouslySetInnerHTML={{ __html: head.titleHtml }} />
+            <p className="svc-intro__sub">{head.sub}</p>
+          </motion.div>
 
-          <div className="svc-show__stage">
-            {services.map((s, i) => {
-              const Icon = ICONS[s.icon] ?? Building2;
-              const active = i === index;
-              return (
-                <motion.article
-                  key={i}
-                  className="svc-slide"
-                  aria-hidden={!active}
-                  initial={false}
-                  animate={{ opacity: active ? 1 : 0, y: active ? 0 : i < index ? -48 : 48 }}
-                  transition={{ duration: 0.55, ease: EASE }}
-                  style={{ pointerEvents: active ? "auto" : "none" }}
-                >
-                  <div className="svc-slide__text">
-                    <span className="svc-slide__no">{pad(i + 1)} <i>/ {pad(n)}</i></span>
-                    <span className="svc-slide__icon"><Icon /></span>
-                    <h3>{s.title}</h3>
-                    <p>{s.desc}</p>
-                    <a className="btn btn--light btn--lg" href="#kontakt">Anfragen <ArrowRight /></a>
-                  </div>
-                  <div className="svc-slide__media">
-                    <motion.img
-                      src={asset(s.image)}
-                      alt={s.alt ?? s.title}
-                      loading="lazy"
-                      animate={{ scale: active ? 1 : 1.12 }}
-                      transition={{ duration: 0.8, ease: EASE }}
-                    />
-                  </div>
-                </motion.article>
-              );
-            })}
-          </div>
+          {/* Slides 1..N — one service each */}
+          {services.map((s, i) => {
+            const Icon = ICONS[s.icon] ?? Building2;
+            const active = step === i + 1;
+            return (
+              <motion.article
+                key={i}
+                className="svc-slide"
+                aria-hidden={!active}
+                initial={false}
+                animate={{ opacity: active ? 1 : 0, y: active ? 0 : step > i + 1 ? -48 : 48 }}
+                transition={{ duration: 0.55, ease: EASE }}
+                style={{ pointerEvents: active ? "auto" : "none" }}
+              >
+                <div className="svc-slide__text">
+                  <span className="svc-slide__icon"><Icon /></span>
+                  <h3>{s.title}</h3>
+                  <p>{s.desc}</p>
+                  <a className="btn btn--light btn--lg" href="#kontakt">Anfragen <ArrowRight /></a>
+                </div>
+                <div className="svc-slide__media">
+                  <motion.img
+                    src={asset(s.image)}
+                    alt={s.alt ?? s.title}
+                    loading="lazy"
+                    animate={{ scale: active ? 1 : 1.12 }}
+                    transition={{ duration: 0.8, ease: EASE }}
+                  />
+                </div>
+              </motion.article>
+            );
+          })}
 
+          {/* Progress rail (services only) */}
           <nav className="svc-show__rail" aria-label="Leistungen">
             {services.map((s, i) => (
               <button
                 key={i}
-                className={i === index ? "is-active" : ""}
+                className={step === i + 1 ? "is-active" : ""}
                 aria-label={s.title}
-                aria-current={i === index}
-                onClick={() => goTo(i)}
+                aria-current={step === i + 1}
+                onClick={() => goToService(i)}
               >
                 <span />
               </button>
             ))}
           </nav>
 
-          <span className="svc-show__hint" aria-hidden="true">Scrollen<i /></span>
+          <span className={`svc-show__hint${introActive ? " is-visible" : ""}`} aria-hidden="true">Scrollen<i /></span>
         </div>
       </div>
     </section>
