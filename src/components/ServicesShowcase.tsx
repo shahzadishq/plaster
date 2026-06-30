@@ -15,11 +15,13 @@ const ICONS: Record<string, LucideIcon> = {
 };
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-// Slide acts as a group; children rise in with a staggered delay (custom).
+// Slide acts as a group; children fade-in-up with a staggered delay (custom).
+// Normal fadeInUp speed (~0.9s, gentle ease) like the Elementor default.
 const groupV = { hidden: {}, show: {} };
+const FADE_EASE = [0.25, 0.46, 0.45, 0.94] as const;
 const riseV = {
-  hidden: { opacity: 0, y: 36 },
-  show: (d = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE, delay: d } }),
+  hidden: { opacity: 0, y: 40 },
+  show: (d = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.9, ease: FADE_EASE, delay: d } }),
 };
 
 function useCompact() {
@@ -100,7 +102,7 @@ export default function ServicesShowcase() {
             aria-hidden={!introActive}
             initial={false}
             animate={{ opacity: introActive ? 1 : 0, y: introActive ? 0 : -40 }}
-            transition={{ duration: 0.55, ease: EASE }}
+            transition={{ duration: 0.8, ease: FADE_EASE }}
             style={{ pointerEvents: introActive ? "auto" : "none" }}
           >
             <span className="eyebrow eyebrow--light eyebrow--center">{head.eyebrow}</span>
@@ -125,8 +127,8 @@ export default function ServicesShowcase() {
                 <div className="svc-slide__text">
                   <motion.span className="svc-slide__icon" variants={riseV} custom={0}><Icon /></motion.span>
                   <motion.h3 variants={riseV} custom={0}>{s.title}</motion.h3>
-                  <motion.p variants={riseV} custom={0.18}>{s.desc}</motion.p>
-                  <motion.a className="btn btn--light btn--lg" href="#kontakt" variants={riseV} custom={0.36}>Anfragen <ArrowRight /></motion.a>
+                  <motion.p variants={riseV} custom={0.24}>{s.desc}</motion.p>
+                  <motion.a className="btn btn--light btn--lg" href="#kontakt" variants={riseV} custom={0.48}>Anfragen <ArrowRight /></motion.a>
                 </div>
                 <motion.div className="svc-slide__media" variants={riseV} custom={0}>
                   <img src={asset(s.image)} alt={s.alt ?? s.title} loading="lazy" />
