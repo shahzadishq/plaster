@@ -15,6 +15,13 @@ const ICONS: Record<string, LucideIcon> = {
 };
 const EASE = [0.16, 1, 0.3, 1] as const;
 
+// Slide acts as a group; children rise in with a staggered delay (custom).
+const groupV = { hidden: {}, show: {} };
+const riseV = {
+  hidden: { opacity: 0, y: 36 },
+  show: (d = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE, delay: d } }),
+};
+
 function useCompact() {
   const [compact, setCompact] = useState(false);
   useEffect(() => {
@@ -46,14 +53,6 @@ export default function ServicesShowcase() {
     if (!n) return;
     setStep(Math.min(steps - 1, Math.max(0, Math.floor(p * steps))));
   });
-
-  function goToService(i: number) {
-    const el = ref.current;
-    if (!el) return;
-    const travel = el.offsetHeight - window.innerHeight;
-    const target = el.offsetTop + ((i + 1 + 0.5) / steps) * travel; // service i -> step i+1
-    window.scrollTo({ top: target, behavior: "smooth" });
-  }
 
   // Static, accessible fallback (mobile / reduced motion): the classic grid.
   if (reduce || compact || n === 0) {
@@ -118,44 +117,23 @@ export default function ServicesShowcase() {
                 key={i}
                 className="svc-slide"
                 aria-hidden={!active}
-                initial={false}
-                animate={{ opacity: active ? 1 : 0, y: active ? 0 : step > i + 1 ? -48 : 48 }}
-                transition={{ duration: 0.55, ease: EASE }}
+                variants={groupV}
+                initial="hidden"
+                animate={active ? "show" : "hidden"}
                 style={{ pointerEvents: active ? "auto" : "none" }}
               >
                 <div className="svc-slide__text">
-                  <span className="svc-slide__icon"><Icon /></span>
-                  <h3>{s.title}</h3>
-                  <p>{s.desc}</p>
-                  <a className="btn btn--light btn--lg" href="#kontakt">Anfragen <ArrowRight /></a>
+                  <motion.span className="svc-slide__icon" variants={riseV} custom={0}><Icon /></motion.span>
+                  <motion.h3 variants={riseV} custom={0}>{s.title}</motion.h3>
+                  <motion.p variants={riseV} custom={0.18}>{s.desc}</motion.p>
+                  <motion.a className="btn btn--light btn--lg" href="#kontakt" variants={riseV} custom={0.36}>Anfragen <ArrowRight /></motion.a>
                 </div>
-                <div className="svc-slide__media">
-                  <motion.img
-                    src={asset(s.image)}
-                    alt={s.alt ?? s.title}
-                    loading="lazy"
-                    animate={{ scale: active ? 1 : 1.12 }}
-                    transition={{ duration: 0.8, ease: EASE }}
-                  />
-                </div>
+                <motion.div className="svc-slide__media" variants={riseV} custom={0}>
+                  <img src={asset(s.image)} alt={s.alt ?? s.title} loading="lazy" />
+                </motion.div>
               </motion.article>
             );
           })}
-
-          {/* Progress rail (services only) */}
-          <nav className="svc-show__rail" aria-label="Leistungen">
-            {services.map((s, i) => (
-              <button
-                key={i}
-                className={step === i + 1 ? "is-active" : ""}
-                aria-label={s.title}
-                aria-current={step === i + 1}
-                onClick={() => goToService(i)}
-              >
-                <span />
-              </button>
-            ))}
-          </nav>
 
           <span className={`svc-show__hint${introActive ? " is-visible" : ""}`} aria-hidden="true">Scrollen<i /></span>
         </div>
